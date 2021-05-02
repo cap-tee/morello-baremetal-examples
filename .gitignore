@@ -1,0 +1,8 @@
+**/.metadata/*
+/developmentStudio/**/Debug/*.mk
+/developmentStudio/**/Debug/src/*.d
+/developmentStudio/**/Debug/src/*.o
+/developmentStudio/**/Debug/src/*.mk
+/developmentStudio/**/Debug/makefile
+/developmentStudio/**/Debug/*.axf
+
