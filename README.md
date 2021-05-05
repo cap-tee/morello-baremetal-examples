@@ -18,7 +18,8 @@ This directory contains the SCP/MCP binary files in order to run the Morello FVP
 This directory contains a set of projects that can be loaded into the development Studio. Documentation can be found in the in the CAP-TEE Morello Getting Started Guide.
 
 1. HelloWorld - Outputs "Hello World" to the console at EL3.
-2. MMUEL3 - Changing the MMU set up at EL3 for Morello.
+2. MMUEL3 - Changes the MMU set up at EL3 for Morello.
+3. EL3ToEL1 - Changes Exception level to either EL1S or EL1N.
 
 
 ### scripts
