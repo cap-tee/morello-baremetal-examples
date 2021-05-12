@@ -21,6 +21,7 @@ This directory contains a set of projects that can be loaded into the developmen
 2. MMUEL3 - Changes the MMU set up at EL3 for Morello.
 3. EL3ToEL1 - Changes Exception level to either EL1S or EL1N.
 4. EL3MMUToEL1MMU - Changes Exception level to either EL1S or EL1N and sets up the MMUs, and secure & non-secure memory regions.
+5. EL3MMUUART - Changes the MMU set up at EL3 for Morello, sets up the UART and writes a message.
 
 
 ### scripts
