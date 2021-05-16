@@ -15,7 +15,7 @@ This directory contains the SCP/MCP binary files in order to run the Morello FVP
 
 ### developmentStudio
 
-This directory contains a set of projects that can be loaded into the development Studio. Documentation can be found in the in the CAP-TEE Morello Getting Started Guide.
+This directory contains a set of projects that can be loaded into the development Studio. Documentation can be found in the in the CAP-TEE Morello Getting Started Guide https://github.com/cap-tee/cheri-docs/blob/main/morello-getting-started.md.
 
 1. HelloWorld - Outputs "Hello World" to the console at EL3.
 2. MMUEL3 - Changes the MMU set up at EL3 for Morello.
@@ -23,6 +23,8 @@ This directory contains a set of projects that can be loaded into the developmen
 4. EL3MMUToEL1MMU - Changes Exception level to either EL1S or EL1N and sets up the MMUs, and secure & non-secure memory regions.
 5. EL3MMUUART - Changes the MMU set up at EL3 for Morello, sets up the UART and writes a message.
 6. EL3MMUToEL1MMUUART - Changes Exception level to either EL1S or EL1N and sets up the MMUs and uart, and writes a message. It also sets up secure & non-secure memory regions.
+7. EL3MMUTimerInterrupt - sets up the mmu at EL3, installs the vector tables for exception handling, sets up the interrupt controller, and performs a timer interrupt.
+8. EL3MMUEL1MMUUARTtimerInterrupt - sets up the mmu at EL3, installs the vector tables for exception handling, sets up the interrupt controller, and performs a secure timer interrupt. Changes Exception level to either EL1S or EL1N and sets up the MMUs and uart, and performs another timer interrupt (secure timer in EL1S and non secure timer in EL1N). It also sets up secure & non-secure memory regions.
 
 
 ### scripts
