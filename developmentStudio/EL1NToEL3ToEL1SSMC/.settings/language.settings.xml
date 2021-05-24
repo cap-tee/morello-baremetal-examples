@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project>
+    	
+    <configuration id="com.arm.llvm.build.project.exe.debug.base.var.llvm-11.0.0.818035727" name="Debug">
+        		
+        <extension point="org.eclipse.cdt.core.LanguageSettingsProvider">
+            			
+            <provider copy-of="extension" id="org.eclipse.cdt.ui.UserLanguageSettingsProvider"/>
+            			
+            <provider-reference id="org.eclipse.cdt.core.ReferencedProjectsLanguageSettingsProvider" ref="shared-provider"/>
+            			
+            <provider-reference id="org.eclipse.cdt.managedbuilder.core.MBSLanguageSettingsProvider" ref="shared-provider"/>
+            			
+            <provider class="com.arm.eclipse.builder.llvm.discovery.LLVMLanguageSettingsProvider" console="false" env-hash="467965777907172107" id="com.arm.llvm.builder.langprovider" keep-relative-paths="false" name="LLVM Compiler Built-in Compiler Settings" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">
+                				
+                <language-scope id="com.arm.eclipse.builder.llvm.lang.c.clang"/>
+                				
+                <language-scope id="com.arm.eclipse.builder.llvm.lang.cpp.clang"/>
+                			
+            </provider>
+            		
+        </extension>
+        	
+    </configuration>
+    	
+    <configuration id="com.arm.llvm.build.project.exe.release.base.var.llvm-11.0.0.1762672468" name="Release">
+        		
+        <extension point="org.eclipse.cdt.core.LanguageSettingsProvider">
+            			
+            <provider copy-of="extension" id="org.eclipse.cdt.ui.UserLanguageSettingsProvider"/>
+            			
+            <provider-reference id="org.eclipse.cdt.core.ReferencedProjectsLanguageSettingsProvider" ref="shared-provider"/>
+            			
+            <provider-reference id="org.eclipse.cdt.managedbuilder.core.MBSLanguageSettingsProvider" ref="shared-provider"/>
+            			
+            <provider class="com.arm.eclipse.builder.llvm.discovery.LLVMLanguageSettingsProvider" console="false" env-hash="555507142069553440" id="com.arm.llvm.builder.langprovider" keep-relative-paths="false" name="LLVM Compiler Built-in Compiler Settings" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">
+                				
+                <language-scope id="com.arm.eclipse.builder.llvm.lang.c.clang"/>
+                				
+                <language-scope id="com.arm.eclipse.builder.llvm.lang.cpp.clang"/>
+                			
+            </provider>
+            		
+        </extension>
+        	
+    </configuration>
+    
+</project>

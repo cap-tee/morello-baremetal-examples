@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?fileVersion 4.0.0?><cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
+    	
+    <storageModule moduleId="org.eclipse.cdt.core.settings">
+        		
+        <cconfiguration id="com.arm.llvm.build.project.exe.debug.base.var.llvm-11.0.0.818035727">
+            			
+            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.arm.llvm.build.project.exe.debug.base.var.llvm-11.0.0.818035727" moduleId="org.eclipse.cdt.core.settings" name="Debug">
+                				
+                <externalSettings/>
+                				
+                <extensions>
+                    					
+                    <extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="com.arm.llvm.builder.error" point="org.eclipse.cdt.core.ErrorParser"/>
+                    				
+                </extensions>
+                			
+            </storageModule>
+            			
+            <storageModule moduleId="cdtBuildSystem" version="4.0.0">
+                				
+                <configuration artifactExtension="axf" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="clean" description="" id="com.arm.llvm.build.project.exe.debug.base.var.llvm-11.0.0.818035727" name="Debug" parent="com.arm.llvm.build.project.exe.debug.base.var.llvm-11.0.0">
+                    					
+                    <folderInfo id="com.arm.llvm.build.project.exe.debug.base.var.llvm-11.0.0.818035727." name="/" resourcePath="">
+                        						
+                        <toolChain id="com.arm.llvm.toolchain.exe.debug.base.var.llvm-11.0.0.1533063777" name="LLVM 11.0.0" superClass="com.arm.llvm.toolchain.exe.debug.base.var.llvm-11.0.0">
+                            							
+                            <targetPlatform id="com.arm.llvm.build.project.exe.debug.base.var.llvm-11.0.0.818035727..294789258" name=""/>
+                            							
+                            <builder buildPath="${workspace_loc:/EL1NToEL3ToEL1SSMC}/Debug" id="com.arm.llvm.toolchain.builder.1196553751" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="com.arm.llvm.toolchain.builder"/>
+                            							
+                            <tool id="com.arm.llvm.tool.c.compiler.base.var.llvm-11.0.0.532080697" name="LLVM C Compiler 11.0.0" superClass="com.arm.llvm.tool.c.compiler.base.var.llvm-11.0.0">
+                                								
+                                <option defaultValue="com.arm.llvm.tool.c.compiler.base.option.optlevel.O0" id="com.arm.llvm.tool.c.compiler.base.option.optlevel.1056310622" name="Optimization level" superClass="com.arm.llvm.tool.c.compiler.base.option.optlevel" useByScannerDiscovery="true" valueType="enumerated"/>
+                                								
+                                <option defaultValue="com.arm.llvm.tool.c.compiler.base.options.debug.level.std" id="com.arm.llvm.tool.c.compiler.base.options.debug.level.1576410071" name="Debug Level" superClass="com.arm.llvm.tool.c.compiler.base.options.debug.level" useByScannerDiscovery="true" valueType="enumerated"/>
+                                								
+                                <option id="com.arm.llvm.tool.c.compiler.base.option.arch.1404983646" name="Architecture (-march)" superClass="com.arm.llvm.tool.c.compiler.base.option.arch" useByScannerDiscovery="true" value="morello" valueType="string"/>
+                                								
+                                <inputType id="com.arm.llvm.tool.c.compiler.base.input.879715898" superClass="com.arm.llvm.tool.c.compiler.base.input"/>
+                                							
+                            </tool>
+                            							
+                            <tool id="com.arm.llvm.tool.cpp.compiler.base.var.llvm-11.0.0.2018025121" name="LLVM C++ Compiler 11.0.0" superClass="com.arm.llvm.tool.cpp.compiler.base.var.llvm-11.0.0">
+                                								
+                                <option defaultValue="com.arm.llvm.tool.c.compiler.base.option.optlevel.O0" id="com.arm.llvm.tool.c.compiler.base.option.optlevel.62796521" name="Optimization level" superClass="com.arm.llvm.tool.c.compiler.base.option.optlevel" useByScannerDiscovery="true" valueType="enumerated"/>
+                                								
+                                <option defaultValue="com.arm.llvm.tool.c.compiler.base.options.debug.level.std" id="com.arm.llvm.tool.c.compiler.base.options.debug.level.934062751" name="Debug Level" superClass="com.arm.llvm.tool.c.compiler.base.options.debug.level" useByScannerDiscovery="true" valueType="enumerated"/>
+                                							
+                            </tool>
+                            							
+                            <tool id="com.arm.llvm.tool.assembler.base.var.llvm-11.0.0.256477449" name="LLVM Assembler 11.0.0" superClass="com.arm.llvm.tool.assembler.base.var.llvm-11.0.0">
+                                								
+                                <inputType id="com.arm.llvm.tool.assembler.base.input.276175759" superClass="com.arm.llvm.tool.assembler.base.input"/>
+                                							
+                            </tool>
+                            							
+                            <tool id="com.arm.llvm.tool.c.linker.base.var.llvm-11.0.0.1207309677" name="LLVM C Linker 11.0.0" superClass="com.arm.llvm.tool.c.linker.base.var.llvm-11.0.0">
+                                								
+                                <option id="com.arm.llvm.tool.c.linker.base.option.arch.1543746300" name="Architecture (-march)" superClass="com.arm.llvm.tool.c.linker.base.option.arch" useByScannerDiscovery="true" value="morello" valueType="string"/>
+                                								
+                                <option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.arm.llvm.tool.c.linker.base.option.extras.1611812475" name="Other options (-Xlinker [option])" superClass="com.arm.llvm.tool.c.linker.base.option.extras" useByScannerDiscovery="false" valueType="stringList">
+                                    									
+                                    <listOptionValue builtIn="false" value="-T/home/osboxes/projects/morello-baremetal-examples/developmentStudio/EL1NToEL3ToEL1SSMC/src/linker-script.ld -v"/>
+                                    								
+                                </option>
+                                								
+                                <inputType id="com.arm.llvm.tool.c.linker.base.input.1412611687" superClass="com.arm.llvm.tool.c.linker.base.input">
+                                    									
+                                    <additionalInput kind="additionalinput" paths="$(LIBS)"/>
+                                    									
+                                    <additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
+                                    								
+                                </inputType>
+                                							
+                            </tool>
+                            							
+                            <tool id="com.arm.llvm.tool.cpp.linker.base.var.llvm-11.0.0.1178467470" name="LLVM C++ Linker 11.0.0" superClass="com.arm.llvm.tool.cpp.linker.base.var.llvm-11.0.0"/>
+                            							
+                            <tool id="com.arm.llvm.tool.archiver.base.var.llvm-11.0.0.962315767" name="LLVM Archiver 11.0.0" superClass="com.arm.llvm.tool.archiver.base.var.llvm-11.0.0"/>
+                            						
+                        </toolChain>
+                        					
+                    </folderInfo>
+                    					
+                    <sourceEntries>
+                        						
+                        <entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+                        					
+                    </sourceEntries>
+                    				
+                </configuration>
+                			
+            </storageModule>
+            			
+            <storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+            		
+        </cconfiguration>
+        		
+        <cconfiguration id="com.arm.llvm.build.project.exe.release.base.var.llvm-11.0.0.1762672468">
+            			
+            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.arm.llvm.build.project.exe.release.base.var.llvm-11.0.0.1762672468" moduleId="org.eclipse.cdt.core.settings" name="Release">
+                				
+                <externalSettings/>
+                				
+                <extensions>
+                    					
+                    <extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="com.arm.llvm.builder.error" point="org.eclipse.cdt.core.ErrorParser"/>
+                    				
+                </extensions>
+                			
+            </storageModule>
+            			
+            <storageModule moduleId="cdtBuildSystem" version="4.0.0">
+                				
+                <configuration artifactExtension="axf" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" cleanCommand="clean" description="" id="com.arm.llvm.build.project.exe.release.base.var.llvm-11.0.0.1762672468" name="Release" parent="com.arm.llvm.build.project.exe.release.base.var.llvm-11.0.0">
+                    					
+                    <folderInfo id="com.arm.llvm.build.project.exe.release.base.var.llvm-11.0.0.1762672468." name="/" resourcePath="">
+                        						
+                        <toolChain id="com.arm.llvm.toolchain.exe.release.base.var.llvm-11.0.0.1297013962" name="LLVM 11.0.0" superClass="com.arm.llvm.toolchain.exe.release.base.var.llvm-11.0.0">
+                            							
+                            <targetPlatform id="com.arm.llvm.build.project.exe.release.base.var.llvm-11.0.0.1762672468..1846505203" name=""/>
+                            							
+                            <builder buildPath="${workspace_loc:/EL1NToEL3ToEL1SSMC}/Release" id="com.arm.llvm.toolchain.builder.1523847044" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="com.arm.llvm.toolchain.builder"/>
+                            							
+                            <tool id="com.arm.llvm.tool.c.compiler.base.var.llvm-11.0.0.199454146" name="LLVM C Compiler 11.0.0" superClass="com.arm.llvm.tool.c.compiler.base.var.llvm-11.0.0">
+                                								
+                                <option defaultValue="com.arm.llvm.tool.c.compiler.base.option.optlevel.O3" id="com.arm.llvm.tool.c.compiler.base.option.optlevel.1552221828" name="Optimization level" superClass="com.arm.llvm.tool.c.compiler.base.option.optlevel" useByScannerDiscovery="true" valueType="enumerated"/>
+                                								
+                                <option defaultValue="com.arm.llvm.tool.c.compiler.base.options.debug.level.none" id="com.arm.llvm.tool.c.compiler.base.options.debug.level.1743632090" name="Debug Level" superClass="com.arm.llvm.tool.c.compiler.base.options.debug.level" useByScannerDiscovery="true" valueType="enumerated"/>
+                                								
+                                <inputType id="com.arm.llvm.tool.c.compiler.base.input.34364925" superClass="com.arm.llvm.tool.c.compiler.base.input"/>
+                                							
+                            </tool>
+                            							
+                            <tool id="com.arm.llvm.tool.cpp.compiler.base.var.llvm-11.0.0.654913911" name="LLVM C++ Compiler 11.0.0" superClass="com.arm.llvm.tool.cpp.compiler.base.var.llvm-11.0.0">
+                                								
+                                <option defaultValue="com.arm.llvm.tool.c.compiler.base.option.optlevel.O3" id="com.arm.llvm.tool.c.compiler.base.option.optlevel.1023680067" name="Optimization level" superClass="com.arm.llvm.tool.c.compiler.base.option.optlevel" useByScannerDiscovery="true" valueType="enumerated"/>
+                                								
+                                <option defaultValue="com.arm.llvm.tool.c.compiler.base.options.debug.level.none" id="com.arm.llvm.tool.c.compiler.base.options.debug.level.1432936859" name="Debug Level" superClass="com.arm.llvm.tool.c.compiler.base.options.debug.level" useByScannerDiscovery="true" valueType="enumerated"/>
+                                							
+                            </tool>
+                            							
+                            <tool id="com.arm.llvm.tool.assembler.base.var.llvm-11.0.0.751274690" name="LLVM Assembler 11.0.0" superClass="com.arm.llvm.tool.assembler.base.var.llvm-11.0.0">
+                                								
+                                <inputType id="com.arm.llvm.tool.assembler.base.input.1818469543" superClass="com.arm.llvm.tool.assembler.base.input"/>
+                                							
+                            </tool>
+                            							
+                            <tool id="com.arm.llvm.tool.c.linker.base.var.llvm-11.0.0.1433738265" name="LLVM C Linker 11.0.0" superClass="com.arm.llvm.tool.c.linker.base.var.llvm-11.0.0">
+                                								
+                                <inputType id="com.arm.llvm.tool.c.linker.base.input.843864072" superClass="com.arm.llvm.tool.c.linker.base.input">
+                                    									
+                                    <additionalInput kind="additionalinput" paths="$(LIBS)"/>
+                                    									
+                                    <additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
+                                    								
+                                </inputType>
+                                							
+                            </tool>
+                            							
+                            <tool id="com.arm.llvm.tool.cpp.linker.base.var.llvm-11.0.0.2102198859" name="LLVM C++ Linker 11.0.0" superClass="com.arm.llvm.tool.cpp.linker.base.var.llvm-11.0.0"/>
+                            							
+                            <tool id="com.arm.llvm.tool.archiver.base.var.llvm-11.0.0.594647326" name="LLVM Archiver 11.0.0" superClass="com.arm.llvm.tool.archiver.base.var.llvm-11.0.0"/>
+                            						
+                        </toolChain>
+                        					
+                    </folderInfo>
+                    					
+                    <sourceEntries>
+                        						
+                        <entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+                        					
+                    </sourceEntries>
+                    				
+                </configuration>
+                			
+            </storageModule>
+            			
+            <storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+            		
+        </cconfiguration>
+        	
+    </storageModule>
+    	
+    <storageModule moduleId="cdtBuildSystem" version="4.0.0">
+        		
+        <project id="EL1NToEL3ToEL1SSMC.com.arm.llvm.build.project.exe.base.var.llvm-11.0.0.1134784634" name="Executable" projectType="com.arm.llvm.build.project.exe.base.var.llvm-11.0.0"/>
+        	
+    </storageModule>
+    	
+    <storageModule moduleId="scannerConfiguration">
+        		
+        <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+        	
+    </storageModule>
+    	
+    <storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+    	
+    <storageModule moduleId="com.arm.projectSettings" version="6.0.0"/>
+    	
+    <storageModule moduleId="refreshScope"/>
+    	
+    <storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
+    
+</cproject>
