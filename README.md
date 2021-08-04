@@ -29,6 +29,20 @@ This directory contains a set of projects that can be loaded into the developmen
 10. EL1NToEL3ToEL1SSMC - example showing how to pass messages between EL1N (normal world) and EL1S (secure world) using SMC.
 11. EL2- example showing how to use the EL2N Hypervisor mode to perform a two stage memory translation for EL1N, and restrict EL1N from reading and writing to the EL1N MMU memory registers. 
 
+**EL2 stand-alone bare metal program**
+
+12. trustedFW_EL2 - Trusted Firmware Tests. Basic tests to interface to the trusted firmware - this example follows the boot flow to EL2, and then loads an EL2 program from **Development Studio** to interact with the trusted firmware (at EL3).
+
+### commandLine:
+
+This directory contains a set of projects that can be run from the command line. Documentation can be found in the in the CAP-TEE Morello Getting Started Guide https://github.com/cap-tee/cheri-docs/blob/main/morello-getting-started.md.
+
+1. EL3_s_loop - Loading an assembly program at EL3.
+2. EL3_c_loop - loading programs at EL3.
+3. EL2N_s_loop - loading an assembly program at EL2N.
+4. EL2N_c_loop - loading programs at EL2N.
+5. trustedFW_EL2 - Trusted Firmware tests - a script to build, load, and run the EL2 trusted firmware test program from the command line.
+
 ### scripts
 
-This contains the run script for the FVP model for bare metal code.
+This contains the run script for the FVP model for bare metal code starting at EL3.
