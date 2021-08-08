@@ -28,10 +28,11 @@ This directory contains a set of projects that can be loaded into the developmen
 9. EL1ToEL3SMC - example showing how to use the SMC instruction to call into EL3 from either EL1N (normal world) or EL1S (secure world).
 10. EL1NToEL3ToEL1SSMC - example showing how to pass messages between EL1N (normal world) and EL1S (secure world) using SMC.
 11. EL2- example showing how to use the EL2N Hypervisor mode to perform a two stage memory translation for EL1N, and restrict EL1N from reading and writing to the EL1N MMU memory registers. 
+12. EL3UARTredirect - example showing how to redirect an embedded printf function to the uart. 
 
 **EL2 stand-alone bare metal program**
 
-12. trustedFW_EL2 - Trusted Firmware Tests. Basic tests to interface to the trusted firmware - this example follows the boot flow to EL2, and then loads an EL2 program from **Development Studio** to interact with the trusted firmware (at EL3).
+13. trustedFW_EL2 - Trusted Firmware Tests. Basic tests to interface to the trusted firmware - this example follows the boot flow to EL2, and then loads an EL2 program from **Development Studio** to interact with the trusted firmware (at EL3).
 
 ### commandLine:
 
