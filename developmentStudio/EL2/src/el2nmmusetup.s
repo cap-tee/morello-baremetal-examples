@@ -15,7 +15,7 @@
 // SECTION
 //*****************************************
 // This section needs to go into non secure memory region - see linker script
-  .section  .NONSECUREel2nmmusection_ass,"ax"
+  .section  .NONSECUREel2nmmusection_ass_el2,"ax"
   .align 3
 
 //*****************************************
@@ -82,8 +82,8 @@ el2nmmu:
   // (2): 0x8000,0000 - 0xBFFF,FFFF
   // Lower Block
   // fault means ignore
-  LDR      x0, =LOWBLK_FAULT
-  //LDR      x0, =LOWBLK_NORMAL_NON_TRANS
+  //LDR      x0, =LOWBLK_FAULT
+  LDR      x0, =LOWBLK_NORMAL_NON_TRANS
   // OR with start address of region
   ORR      x0, x0, #0x80000000
   // Upper block
@@ -209,7 +209,7 @@ el2nmmu:
   // This is where the EL1N table is stored in memory
   // ------------------------------------------------------------
   // This section goes into non secure memory region by the linker script
-  .section  .NONSECUREttel2nsection_ass,"ax"
+  .section  .NONSECUREttel2nsection_ass_el2,"ax"
   .align 12
 
   .global TABLE_ADDR_EL2N

@@ -12,7 +12,7 @@
  // SECTION AND DEFINES
  //****************************************************************************
    // this file goes into NON secure memory region
- .section .NONSECURERegEL1Nsection_ass, "ax"
+ .section .NONSECUREeretEL1Nsection_ass_el2, "ax"
  .align 3                   // Align to 2^3 byte boundary
 
  // Program state
@@ -25,6 +25,7 @@
  //***********************************************************
  // FUNCTIONS
  //***********************************************************
+
  //-----------------------------------------------------------
  // ERETtoEL1N
  //-----------------------------------------------------------
@@ -41,9 +42,12 @@ ERETtoEL1N:
  // SECTION AND DEFINES
  //****************************************************************************
  // need to put into non secure memory region by linker script
- .section .NONSECUREel1entrysection_ass, "ax"
+ .section .NONSECUREel1entrysection_ass_el1, "ax"
  .align 3                   // Align to 2^3 byte boundary
 
+
+ // function to get the exception information for EL1N
+ .global readESREL1N
  // function to initialise entry to EL1N, sets up stack and registers and branches to main
  // EL1N c code
  .global EL1N_normal_entry
@@ -51,6 +55,17 @@ ERETtoEL1N:
  //***********************************************************
  // FUNCTIONS
  //***********************************************************
+  //----------------------------------------------------------------------------
+ // readESREL1N
+ // Description: Get the exception information for EL1
+ //----------------------------------------------------------------------------
+  .type readESREL1N, "function"
+readESREL1N:
+  // Holds syndrome information for an exception taken to EL1.
+  // Read this to get exception information
+  MRS       x0, ESR_EL1  //Exception Syndrome Register, EL1
+  RET
+
  // ------------------------------------------------------------
  // EL1 normal (non secure) AArch64
  // ------------------------------------------------------------

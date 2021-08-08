@@ -14,7 +14,7 @@
 // SECTION
 //*****************************************
    // This section should automatically go into secure memory region
-  .section  .SECUREel3mmusection_ass,"ax"
+  .section  .SECUREel3mmusection_ass_el3,"ax"
   .align 3
 
 //*****************************************
@@ -170,7 +170,7 @@ el3mmu:
   // This is where the EL3 table is stored in memory
   // ------------------------------------------------------------
   // This section should automatically go into secure memory region
-  .section  .SECUREttel3section_ass,"ax"
+  .section  .SECUREttel3section_ass_el3,"ax"
   .align 12
 
   .global TABLE_ADDR_EL3

@@ -16,7 +16,7 @@
  // SECTION AND DEFINES
  //****************************************************************************
    // the first half of this file goes into secure memory region by default
- .section .SECURERegEL2Nsection_ass, "ax"
+ .section .SECURERegEL2Nsection_ass_el3, "ax"
  .align 3                   // Align to 2^3 byte boundary
 
  // Program state
@@ -71,7 +71,7 @@ ERETtoEL2N:
  // SECTION AND DEFINES
  //****************************************************************************
  // need to put into non secure memory region by linker script
- .section .NONSECUREel2entrysection_ass, "ax"
+ .section .NONSECUREel2entrysection_ass_el2, "ax"
  .align 3                   // Align to 2^3 byte boundary
 
  // function to initialise entry to EL2N, sets up stack and registers and branches
@@ -79,10 +79,16 @@ ERETtoEL2N:
  .global EL2N_hypervisor_entry
  //install vector table for EL2
  .global installVectorsEL2N
+  //install vector table for EL1N
+ .global installVectorsEL1N
  // function to stop EL1 from changing the mmu/memory settings
-.global disableEL1N_mmuChange
-// function to get the exception information for EL2
-.GLOBAL readESREL2
+ .global disableEL1N_mmuChange
+  // function to stop EL1 from changing the vector table register
+ .global disableEL1N_vectorChange
+  // function to stop EL1 from changing the page table / vector table entries
+ .global disableEL1N_memRO
+ // function to get the exception information for EL2
+ .global readESREL2
 
  //***********************************************************
  // FUNCTIONS
@@ -95,7 +101,7 @@ ERETtoEL2N:
   .type readESREL2, "function"
 readESREL2:
   // Holds syndrome information for an exception taken to EL2.
-  // Read this to get SMC ID information
+  // Read this to get exception information
   MRS       x0, ESR_EL2  //Exception Syndrome Register, EL2
   RET
 
@@ -113,6 +119,20 @@ installVectorsEL2N:
   ISB
   RET
 
+  // ------------------------------------------------------------
+ // installVectorsEL1N  - install vectore table for EL1N
+ // ------------------------------------------------------------
+ .type installVectorsEL1N, "function"
+installVectorsEL1N:
+
+  // Install EL1N vector table here for exceptions and interrupts
+  // VBAR_EL1 points to the vector table vectorsEL1N
+  .global vectorsEL1N
+  LDR  x0, =vectorsEL1N
+  MSR  VBAR_EL1, x0
+  ISB
+  RET
+
  //-------------------------------------------
  // disableEL1N_mmuChange
  // function to stop EL1 from changing the mmu/memory settings
@@ -127,9 +147,74 @@ disableEL1N_mmuChange:
   // bit[26]  TVM - the following registers are trapped to EL2 and reported using EC syndrome value 0x18:
   // SCTLR_EL1, TTBR0_EL1, TTBR1_EL1, TCR_EL1, ESR_EL1, FAR_EL1, AFSR0_EL1, AFSR1_EL1, MAIR_EL1, AMAIR_EL1, CONTEXTIDR_EL1.
   ORR      x0, x0, #(1 << 26)                 // bit[26]  TVM traps writes
-  ORR      x0, x0, #(1 << 30)					// TRVM, bit [30] traps reads
+  ORR      x0, x0, #(1 << 30)				  // TRVM, bit [30] traps reads
+  ORR      x0, x0, #(1 << 25)				  // TTLB, bit [25] traps TLB maintenance instructions for the mmu
 
   MSR      HCR_EL2, x0
+  ISB
+
+  RET
+
+ //-------------------------------------------
+ // disableEL1N_vectorChange
+ // function to stop EL1N from changing the EL1N vector table register
+ //-------------------------------------------
+  .type disableEL1N_vectorChange, "function"
+disableEL1N_vectorChange:
+
+  MRS X0, HCR_EL2  //get current register value
+
+  // can't route all general sync exceptions to EL2, but can route
+  // FIQ [3],IRQ [4], SError [5] async exceptions, and can
+  // stop EL1 from changing the vector exception table at EL1
+  // if nested virtualisation feature is present
+  // Data aborts due to write access gets routed to EL1 current sync
+  // THIS DOESN'T SEEM TO SET THE BIT NV1 - THIS IMPLIES THE NESTED
+  // VIRTUALISATION FEATURE IS NOT PRESENT.
+  ORR      x0, x0, #(1 << 43)					// NV1, bit [43] traps VBAR_EL1
+
+  MSR      HCR_EL2, x0
+  ISB
+
+  RET
+
+
+
+ //-------------------------------------------
+ // disableEL1N_memRO
+ // function to stop EL1N from changing the page table / vector table entries
+ // by making the memory region read only in the mmu
+ //-------------------------------------------
+  .type disableEL1N_memRO, "function"
+disableEL1N_memRO:
+  //STAGE1 TRANSLATION - change memory region to read only
+  .equ LOWBLK_NORMAL_NON_TRANS_RO, 0x00000000000000481
+  //first, get memory address of translation table
+  MRS      x1, TTBR0_EL1
+  LDR      x0, =LOWBLK_NORMAL_NON_TRANS_RO //el1 read only section
+  // OR with start address of region
+  ORR      x0, x0, #0x80000000
+  // save to memory
+  STR      x0, [x1, #16]
+  DSB      SY
+  //invalidate TLB
+  TLBI     VMALLE1 //TLB invalidate by VMID, All at stage 1, EL1.
+  DSB      SY
+  ISB
+
+ //STAGE2 TRANSLATION - change memory region to read only
+ .equ LOWBLK_NORMAL_WRT_BCK_RO, 0x0000000000000047D //read only
+  //first, get memory address of translation table
+  MRS      x1, VTTBR_EL2
+  LDR      x0, =LOWBLK_NORMAL_WRT_BCK_RO //read only section
+  // OR with start address of region
+  ORR      x0, x0, #0x80000000
+  // put in the table
+  STR      x0, [x1, #16]
+  DSB      SY
+  //invalidate TLB
+  TLBI     VMALLS12E1 //	TLB invalidate by IPA, Stage 2, EL1.
+  DSB      SY
   ISB
 
   RET

@@ -14,7 +14,7 @@
 // SECTION
 //*****************************************
 // This section needs to go into normal memory region - see linker script
-  .section  .NONSECUREel2_stg2ForEl1nmmusection_ass,"ax"
+  .section  .NONSECURE_stg2ForEl1nmmusection_ass_el2,"ax"
   .align 3
 
 //*****************************************
@@ -34,12 +34,14 @@
 //bit[0] - valid entry 1
 //bit[1] - block entry 0
 //bit[5:2] - memory attribute, Normal, Inner/Outer write back cacheable 1111
-//bit[7:6] - S2AP 11 stage 2 read/write access permissions
+//bit[7:6] - S2AP 11 stage 2 read/write access permissions, 01 read only
 //bit[9:8] - SH 00
 //bit[10] - AF - 1
 //bit[11] - 0
 // 0100 1111 1101 -> 0x4FD
+// 0100 0111 1101 -> 0x47D
 .equ LOWBLK_NORMAL_WRT_BCK, 0x000000000000004FD
+.equ LOWBLK_NORMAL_WRT_BCK_RO, 0x0000000000000047D //read only
 //Device memory
 //bit[0] - valid entry 1
 //bit[1] - block entry 0
@@ -138,8 +140,9 @@ el2_stg2ForEl1n_mmu:
   // (2):  Input IPA 0x8000,0000 - 0xBFFF,FFFF to output PA 0x8000,0000 - 0xBFFF,FFFF
   // Lower Block
   // fault means ignore
-  //LDR      x0, =LOWBLK_NORMAL_WRT_BCK
-  LDR      x0, =LOWBLK_FAULT
+  LDR      x0, =LOWBLK_NORMAL_WRT_BCK
+  // LDR      x0, =LOWBLK_NORMAL_WRT_BCK_RO //read only section
+  //LDR      x0, =LOWBLK_FAULT
   // OR with start address of region
   ORR      x0, x0, #0x80000000
     // Upper block
@@ -211,7 +214,7 @@ el2_stg2ForEl1n_mmu:
   // This is where the EL1N stage 2 table is stored in memory
   // ------------------------------------------------------------
   // This section goes into non secure memory region by the linker script
- .section  .NONSECUREttstg2ForEl1nsection_ass,"ax"
+ .section  .NONSECUREttstg2ForEl1nsection_ass_el2,"ax"
   .align 12
 
   .global TABLE_ADDR_EL1N_STG2

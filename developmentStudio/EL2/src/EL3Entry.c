@@ -17,6 +17,7 @@
 //*****************************************
 // DEFINES
 //*****************************************
+#define LOCATE_FUNC  __attribute__((__section__(".SECUREsection_c_el3")))
 
 //Functions to include
 extern void ERETtoEL2N(void);
@@ -24,7 +25,7 @@ extern void el3mmu(void);
 
 
 //Main program code of secure EL3
-int main(void)
+int LOCATE_FUNC main(void)
 {
 	// uart strings
 	char uartstr[8] = {'E', 'L', '3', ' ', '\n', '\0'};

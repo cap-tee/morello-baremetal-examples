@@ -14,7 +14,7 @@
 // SECTION
 //*****************************************
 // This section needs to go into normal memory region - see linker script
-  .section  .NONSECUREel2_stg1ForEl1nmmusection_ass,"ax"
+  .section  .NONSECURE_stg1ForEl1nmmusection_ass_el2,"ax"
   .align 3
 
 //*****************************************
@@ -30,6 +30,9 @@
 .equ LOWBLK_NORMAL_NON_TRANS, 0x00000000000000401    // Index = 0 (Attr0), AF=1
 .equ LOWBLK_DEVICE_nGnRnE,   0x00000000000000405    // Index = 1 (Attr1), AF=1,
 
+// Index = 0 (Attr0), AF=1, AP=10, read only el1, no access el0
+// |0100 1000 00 0 1|
+.equ LOWBLK_NORMAL_NON_TRANS_RO, 0x00000000000000481
 // Upper Block entries
 // Upper bits set in the Morello default setup, so include here
 .equ UPPBLK_HW60,			(1 << 60)	//Hardware Implementation defined bit 60
@@ -81,8 +84,9 @@ el2_stg1ForEl1n_mmu:
   // (2): input VA 0x8000,0000 - 0xBFFF,FFFF to output IPA 0x8000,0000 - 0xBFFF,FFFF
   // Lower Block
   // fault means ignore
-  LDR      x0, =LOWBLK_FAULT
-  //LDR      x0, =LOWBLK_NORMAL_NON_TRANS
+  //LDR      x0, =LOWBLK_FAULT
+  LDR      x0, =LOWBLK_NORMAL_NON_TRANS
+  //LDR      x0, =LOWBLK_NORMAL_NON_TRANS_RO //el1 read only section
   // OR with start address of region
   ORR      x0, x0, #0x80000000
   // Upper block
@@ -207,7 +211,7 @@ el2_stg1ForEl1n_mmu:
   // This is where the EL1N stage 1 table is stored in memory
   // ------------------------------------------------------------
   // This section goes into non secure memory region by the linker script
-  .section  .NONSECUREttstg1ForEl1nsection_ass,"ax"
+  .section  .NONSECUREttstg1ForEl1nsection_ass_el2,"ax"
   .align 12
 
   .global TABLE_ADDR_EL1N_STG1
