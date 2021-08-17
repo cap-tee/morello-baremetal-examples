@@ -10,55 +10,107 @@
  			   table with faults
  ============================================================================
  */
- /*This section needs to go into normal memory region - see linker script*/
+
+//*****************************************
+// SECTION
+//*****************************************
+// This section needs to go into normal memory region - see linker script
   .section  .NONSECUREel1nmmusection_ass,"ax"
   .align 3
 
-// ------------------------------------------------------------
-// Translation Table block entries templates
-// Assuming MAIR register entries
+//*****************************************
+// DEFINES
+//*****************************************
+// There are three types of table entry: (1) fault, (2) block, (3) next table
+// Define lower and upper table entry attributes to use
+// Assuming MAIR register entries are:
 // Attr0 = 1110 1110 = 0xEE = Normal, Inner/Outer write back non transient as per Morello Default DRAM0
 // Attr1 = 0000 0000 = 0x00 = Device-nGnRnE
 // Lower Block entries
-.equ TT_S1_FAULT,           0x0
-.equ TT_S1_NORMAL_NON_TRANS, 0x00000000000000401    // Index = 0 (Attr0), AF=1
-.equ TT_S1_DEVICE_nGnRnE,   0x00000000000000405    // Index = 1 (Attr1), AF=1, (needs PXN=1, UXN=1 in Upper Block)
+.equ LOWBLK_FAULT,           0x0
+.equ LOWBLK_NORMAL_NON_TRANS, 0x00000000000000401    // Index = 0 (Attr0), AF=1
+.equ LOWBLK_DEVICE_nGnRnE,   0x00000000000000405    // Index = 1 (Attr1), AF=1, (needs PXN=1, UXN=1 in Upper Block)
 
-//Upper Block entries
-//Upper bits set in the Morello default setup, so include here
-.equ TT_S1_HW60,			(1 << 60)	//Hardware Implementation defined bit 60
-.equ TT_S1_HW61,			(1 << 61)   //Hardware Implementation defined bit 61
+// Upper Block entries
+// Upper bits set in the Morello default setup, so include here
+.equ UPPBLK_HW60,			(1 << 60)	//Hardware Implementation defined bit 60
+.equ UPPBLK_HW61,			(1 << 61)   //Hardware Implementation defined bit 61
 
-
-//define function
+// function to set up mmu for EL1N
 .global el1nmmu
+
+//********************************************
+// FUNCTIONS
+//*******************************************
+//-------------------------------------------
+// el1nmmu
+// Set up the mmu for EL1N
+//-------------------------------------------
   .type el1nmmu, "function"
 el1nmmu:
-  //***************************
-  //
-  // MMU setup
-  //
-  //***************************
 
-  // Set the base address of the translation table
-  // ---------------------------------------------
-  // Get address of level 1 table for TTBR0_EL1
-  LDR      x0, =tt_l1_base_el1n
-  MSR      TTBR0_EL1, x0
-
-  // Set up memory attributes
-  // -------------------------
+  // Set up the MAIR memory attributes for the block entries
   // Attr0 = 1110 1110 = 0xEE = Normal, Inner/Outer write back non transient as per Morello Default DRAM0
   // Attr1 = 0000 0000 = 0x00 = Device-nGnRnE
   MOV      x0, #0x00000000000000EE
   MSR      MAIR_EL1, x0
 
+  // EL1S translation table for Morello
+  // Get address of level 1 table for TTBR0_EL1
+  LDR      x1, =TABLE_ADDR_EL1N
+  // CAP-TEE Morello - peripheral and expansion regions - device memory
+  // (0): 0x0000,0000 - 0x3FFF,FFFF
+  // Lower Block
+  LDR      x0, =LOWBLK_DEVICE_nGnRnE
+  // address is 0 - 0x0
+  // put in the table
+  STR      x0, [x1]
+  // Upper Block is 0 - 0x0
+
+  // CAP-TEE Morello - peripheral and expansion regions - device memory
+  // (1): 0x4000,0000 - 0x7FFF,FFFF
+  // Lower Block
+  LDR      x0, =LOWBLK_DEVICE_nGnRnE
+  // OR with start address of region
+  ORR      x0, x0, #0x40000000
+  // put in the table
+  STR      x0, [x1, #8]
+  // Upper Block - 0x0
+
+  // This block is in secure memory, so don't include here in the MMU translation
+  // CAP-TEE Morello - lower DRAM0 region - ignore memory
+  // (2): 0x8000,0000 - 0xBFFF,FFFF
+  // Lower Block
+  // fault means ignore
+  LDR      x0, =LOWBLK_FAULT
+  // OR with start address of region
+  ORR      x0, x0, #0x80000000
+  // Upper block
+  // OR Hardware Implementation defined bit 60
+  ORR      x0, x0, #UPPBLK_HW60
+  // 'OR' Hardware Implementation defined bit 61
+  ORR      x0, x0, #UPPBLK_HW61
+  STR      x0, [x1, #16]
+
+  // CAP-TEE Morello - upper DRAM0 region - normal memory
+  // (3): 0xC000,0000 - 0xFFFF,FFFF
+  // Lower Block
+  LDR      x0, =LOWBLK_NORMAL_NON_TRANS
+  // OR with start address of region
+  ORR      x0, x0, #0xC0000000
+  // Upper block
+  // OR Hardware Implementation defined bit 60
+  ORR      x0, x0, #UPPBLK_HW60
+  // 'OR' Hardware Implementation defined bit 61
+  ORR      x0, x0, #UPPBLK_HW61
+  STR      x0, [x1, #24]
+  DSB      SY
+
   // Set up TCR_EL1
-  // ---------------
-  //morello default setup for mmu EL1
-  //The TCR_EL1 is the control register for stage 1 of the translation.
+  // morello default setup for mmu EL1
+  // The TCR_EL1 is the control register for stage 1 of the translation.
   MOV      x0, #0x1					//T0SZ[5:0] - size offset of memory region
-  ORR      x0, x0, #(0x1 << 3)		//Limits VA space to 39 bits, translation starts @ l1
+  ORR      x0, x0, #(0x1 << 3)		//Limits virtual addr to 39 bits
   ORR      x0, x0, #(0x1 << 4)
   									//Res[6]
   									//TTBR0--
@@ -91,7 +143,7 @@ el1nmmu:
   									//TB11[38]
   									//HA[39]
   									//HD[40]
- ORR      x0, x0, #(0x1 << 41)		//HPD0[41]Hierarchical permissions are disabled, bits 25 to 28 are not ignored (i.e bit 59 to 62 of block can be used by hardware).
+  ORR      x0, x0, #(0x1 << 41)		//HPD0[41]Hierarchical permissions are disabled, bits 25 to 28 are not ignored (i.e bit 59 to 62 of block can be used by hardware).
   									//HPD1[42]
   ORR      x0, x0, #(0x1 << 43) 	//HWU059[43]Bit[59] of each stage 1 translation table Block/Page entry can be used by hardware
   ORR      x0, x0, #(0x1 << 44)		//HWU060[44]Bit[60] of each stage 1 translation table Block/Page entry can be used by hardware
@@ -105,8 +157,8 @@ el1nmmu:
   									//TB1D1[52]
   									//NFD0[53]
   //---ADDED TO REMOVE DEBUGGER MMU WARNINGS---
-   ORR      x0, x0, #(0x1 << 54)    //NFD1[54]    //Disable table walks from TTBR1
-   //------------------------
+  ORR      x0, x0, #(0x1 << 54)     //NFD1[54]    //Disable table walks from TTBR1
+  //------------------------
   									//EOPD0[55]
   									//EOPD1[56]
   									//TCMA[57]
@@ -118,90 +170,47 @@ el1nmmu:
   ISB
 
   // Invalidate TLBs
+  // https://developer.arm.com/documentation/101811/0101/Translation-Lookaside-Buffer-maintenance
+  // https://developer.arm.com/documentation/den0024/a/The-Memory-Management-Unit/The-Translation-Lookaside-Buffer
+  // To change a translation table entry from a previous setup you need to invalidate
+  // the Translation Lookaside Buffers (TLBs) otherwise the cache might reuse recently
+  // used translations.
+  // we change the table between secure and normal worlds
   // ----------------
-  TLBI     VMALLE1
+  TLBI     VMALLE1 //TLB invalidate by VMID, All at stage 1, EL1.
   DSB      SY
   ISB
 
+  // Get base address of level 1 table for TTBR0_EL1
+  LDR      x0, =TABLE_ADDR_EL1N
+  MSR      TTBR0_EL1, x0
 
-  // Generate Translation Table
-  // ---------------------------
-  // First fill table with faults
-  // NOTE: The way the space for the tables is reserved pre-fills it with zeros
-  // When loading the image into a simulation this saves time.  On real hardware
-  // you would want this zeroing loop.
-  //  LDR      x1, =tt_l1_base                   // Address of L1 table
-  //  MOV      w2, #512                          // Number of entries
-  //1:
-  //  STP      xzr, xzr, [x1], #16               // 0x0 (Fault) into table entries
-  //  SUB      w2, w2, #2                        // Decrement count by 2, as we are writing two entries at once
-  //  CBNZ     w2, 1b
-
-
-  // Set the base address of the translation table
-  // ---------------------------------------------
-  // Get address of level 1 table for TTBR0_EL1
-  LDR      x1, =tt_l1_base_el1n
-  //CAP-TEE Morello - peripheral and expansion regions
-  // (0): 0x0000,0000 - 0x3FFF,FFFF
-  //Lower Block
-  LDR      x0, =TT_S1_DEVICE_nGnRnE          // Entry template - device memory
-                                             // Don't need to OR in address, as it is 0
-  STR      x0, [x1]
-
-  //CAP-TEE Morello - peripheral and expansion regions
-  // (1): 0x4000,0000 - 0x7FFF,FFFF
-  //Lower Block
-  LDR      x0, =TT_S1_DEVICE_nGnRnE          // Entry template - device memory
-  ORR      x0, x0, #0x40000000               // 'OR' template with base physical address
-  STR      x0, [x1, #8]
-  //Upper Block - 0x0
-
-  //This block is in secure memory, so don't include here in the MMU translation
-  //CAP-TEE Morello - lower DRAM0 region
-  // (2): 0x8000,0000 - 0xBFFF,FFFF
-  //Lower Block
-  LDR      x0, =TT_S1_FAULT                  // Entry template  - Ignore this block
-  ORR      x0, x0, #0x80000000               // 'OR' template with base physical address
-  ////Upper block
-  ORR      x0, x0, #TT_S1_HW60      		 // 'OR' Hardware Implementation defined bit 60
-  ORR      x0, x0, #TT_S1_HW61      		 // 'OR' Hardware Implementation defined bit 61                                            // AP=0b00, EL1 RW, EL0 No Access
-  STR      x0, [x1, #16]
-
-  //CAP-TEE Morello - upper DRAM0 region
-  // (3): 0xC000,0000 - 0xFFFF,FFFF
-  //Lower Block
-  LDR      x0, =TT_S1_NORMAL_NON_TRANS       // Entry template - normal memory
-  ORR      x0, x0, #0xC0000000               // 'OR' template with base physical address
-  //Upper block
-  ORR      x0, x0, #TT_S1_HW60      		 // 'OR' Hardware Implementation defined bit 60
-  ORR      x0, x0, #TT_S1_HW61      		 // 'OR' Hardware Implementation defined bit 61
-  STR      x0, [x1, #24]
-  DSB      SY
 
   // Enable MMU - set the System Control Register for EL1
-  // -----------
-  MOV      x0, #(1 << 0)                     // bit[0]  M=1    Enable the stage 1 MMU
-  ORR      x0, x0, #(1 << 2)                 // bit[2]  C=1    Enable data and unified caches
+  MOV      x0, #(1 << 0)                     // bit[0]  M=1    Enable MMU
+  ORR      x0, x0, #(1 << 2)                 // bit[2]  C=1    Enable data and caches
   ORR      x0, x0, #(1 << 3)                 // bit[3]  SA 	   Alignment check enabled
-  ORR      x0, x0, #(1 << 12)                // bit[12] I=1    Enable instruction fetches to allocate into unified caches
-                                             // bit[19] WXN=0  Write permission does not imply XN
+  ORR      x0, x0, #(1 << 12)                // bit[12] I=1    Enable instruction fetches for caches
+                                             // bit[19] WXN=0
                                              // bit[21] IESB=0
-                                             // bit[25] EE=0   EL3 data accesses are little endian
+                                             // bit[25] EE=0   little endian
   MSR      SCTLR_EL1, x0
   ISB
-  // MMU is now enabled
+
   RET
 
+  //*****************************************
+  // SECTION
+  //*****************************************
   // ------------------------------------------------------------
   // Translation table for EL1N
   // This is where the EL1N table is stored in memory
   // ------------------------------------------------------------
-  //This section goes into non secure memory region by the linker script
+  // This section goes into non secure memory region by the linker script
   .section  .NONSECUREttel1nsection_ass,"ax"
   .align 12
 
-  .global tt_l1_base_el1n
-tt_l1_base_el1n:
+  .global TABLE_ADDR_EL1N
+TABLE_ADDR_EL1N:
   .fill 4096 , 1 , 0
 
