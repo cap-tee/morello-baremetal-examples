@@ -92,8 +92,8 @@ SECTIONS
     {
     . = ALIGN(8);
     __NONSECUREsection_mmu_start__ = .;
-    *(BOOT_EL1NMMU*)
-    *(TT_EL1N*)
+    *(.NONSECUREel1nmmusection_ass*)
+    *(.NONSECUREttel1nsection_ass*)
     __NONSECUREsection_mmu_end__ = .;
     } > nonsecure_ram
        
