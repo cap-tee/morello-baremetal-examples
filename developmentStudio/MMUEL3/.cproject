@@ -41,7 +41,9 @@
                                 								
                                 <option defaultValue="com.arm.llvm.tool.c.compiler.base.options.debug.level.std" id="com.arm.llvm.tool.c.compiler.base.options.debug.level.1626898392" name="Debug Level" superClass="com.arm.llvm.tool.c.compiler.base.options.debug.level" useByScannerDiscovery="true" valueType="enumerated"/>
                                 								
-                                <option id="com.arm.llvm.tool.c.compiler.base.option.arch.1153908434" name="Architecture (-march)" superClass="com.arm.llvm.tool.c.compiler.base.option.arch" useByScannerDiscovery="true" value="morello" valueType="string"/>
+                                <option id="com.arm.llvm.tool.c.compiler.base.option.arch.1153908434" name="Architecture (-march)" superClass="com.arm.llvm.tool.c.compiler.base.option.arch" useByScannerDiscovery="true" value="morello+c64" valueType="string"/>
+                                								
+                                <option id="com.arm.llvm.tool.c.compiler.base.option.abi.233959329" name="ABI (-mabi)" superClass="com.arm.llvm.tool.c.compiler.base.option.abi" useByScannerDiscovery="true" value="purecap" valueType="string"/>
                                 								
                                 <inputType id="com.arm.llvm.tool.c.compiler.base.input.1431444138" superClass="com.arm.llvm.tool.c.compiler.base.input"/>
                                 							
@@ -57,13 +59,19 @@
                             							
                             <tool id="com.arm.llvm.tool.assembler.base.var.llvm-11.0.0.794592882" name="LLVM Assembler 11.0.0" superClass="com.arm.llvm.tool.assembler.base.var.llvm-11.0.0">
                                 								
+                                <option id="com.arm.llvm.tool.assembler.base.option.arch.1825454074" name="Architecture (-march)" superClass="com.arm.llvm.tool.assembler.base.option.arch" useByScannerDiscovery="true" value="morello+c64" valueType="string"/>
+                                								
+                                <option id="com.arm.llvm.tool.assembler.base.option.abi.1158726515" name="ABI (-mabi)" superClass="com.arm.llvm.tool.assembler.base.option.abi" useByScannerDiscovery="true" value="purecap" valueType="string"/>
+                                								
                                 <inputType id="com.arm.llvm.tool.assembler.base.input.201617878" superClass="com.arm.llvm.tool.assembler.base.input"/>
                                 							
                             </tool>
                             							
                             <tool id="com.arm.llvm.tool.c.linker.base.var.llvm-11.0.0.2090995760" name="LLVM C Linker 11.0.0" superClass="com.arm.llvm.tool.c.linker.base.var.llvm-11.0.0">
                                 								
-                                <option id="com.arm.llvm.tool.c.linker.base.option.arch.1488525643" name="Architecture (-march)" superClass="com.arm.llvm.tool.c.linker.base.option.arch" useByScannerDiscovery="true" value="morello" valueType="string"/>
+                                <option id="com.arm.llvm.tool.c.linker.base.option.arch.1488525643" name="Architecture (-march)" superClass="com.arm.llvm.tool.c.linker.base.option.arch" useByScannerDiscovery="true" value="morello+c64" valueType="string"/>
+                                								
+                                <option id="com.arm.llvm.tool.c.linker.base.option.abi.264464912" name="ABI (-mabi)" superClass="com.arm.llvm.tool.c.linker.base.option.abi" useByScannerDiscovery="true" value="purecap" valueType="string"/>
                                 								
                                 <inputType id="com.arm.llvm.tool.c.linker.base.input.348170563" superClass="com.arm.llvm.tool.c.linker.base.input">
                                     									
@@ -204,5 +212,7 @@
     <storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
     	
     <storageModule moduleId="com.arm.projectSettings" version="6.0.0"/>
+    	
+    <storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
     
 </cproject>

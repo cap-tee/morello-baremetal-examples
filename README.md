@@ -1,7 +1,7 @@
 # morello-baremetal-examples
 This repository contains example code for the Morello Platform. More information regarding these examples can be found in the CAP-TEE Morello Getting Started Guide. https://github.com/cap-tee/cheri-docs/blob/main/morello-getting-started.md. 
 
-Projects that can be compiled in both *Morello* and *Morello purecap* have a `purecap` label, otherwise they can only be compiled under *Morello* at present.
+Projects that can be compiled in both *Morello* and *Morello-purecap* have a `purecap` label, otherwise they can only be compiled under *Morello* at present.
 
 Note that these examples have been tested with Development Studio version `armds-morello-edition-2020-1m0.tgz`, FVP version `FVP_Morello_0.11_9` and LLVM version `bare-metal-release-1.0`.
 
@@ -23,7 +23,7 @@ This directory contains a set of projects that can be loaded into the developmen
 
 1. HelloWorld - Outputs "Hello World" to the console at EL3. `purecap`
 2. EL3-purecap - performs some low level capability tests in assembly to test and explore basic CHERI functionality. `purecap`
-3. MMUEL3 - Changes the MMU set up at EL3 for Morello.
+3. MMUEL3 - Changes the MMU set up at EL3 for Morello. `purecap`
 4. EL3ToEL1 - Changes Exception level to either EL1S or EL1N.
 5. EL3MMUToEL1MMU - Changes Exception level to either EL1S or EL1N and sets up the MMUs, and secure & non-secure memory regions.
 6. EL3MMUUART - Changes the MMU set up at EL3 for Morello, sets up the UART and writes a message.
