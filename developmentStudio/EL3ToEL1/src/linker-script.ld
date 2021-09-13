@@ -29,75 +29,93 @@ MEMORY
   nonsecure_ram 	(rwx) : ORIGIN = 0xC0000000, LENGTH = 0x40000000
 }
 
-STACK_SIZE = 0x20000;
+/*stack size can be set to 0x1FFFC for SCBNDS instruction, but limit will be set to 0xC0030000 if base is C0010000, even though pointer to C002FFF0 start*/
+/*stack size can be set to 0x20000 for SCBNDSE instruction of `EXACT` bounds setting, and limit will be set to 0xC0030000 if base is C0010000, and pointer to C0030000 start*/
+STACK_SIZE = 0x20000; 
 STACK_START_SECURE = 0xBFFD0000; /* place EL1S stack at top of secure memory*/
 STACK_START_NONSECURE = 0xFFFD0000; /* place EL1N stack at top of non secure memory*/
 
 SECTIONS
 {
 	/*SECURE SECTIONS*/
+	. = ALIGN(16);
     .rodata : 
     { 
     	*(.rodata*) 
     } > secure_ram
    
+   . = ALIGN(16);
    .text : 
    { 
 	   *(.text*) 
    } > secure_ram
    
     /* Align to 8 bytes (64 bits)*/
-   . = ALIGN(8);
+   . = ALIGN(16);
    __bss_start__ = .;
    .bss :
     {
         *(.bss*)
     } > secure_ram
-    __bss_end__ = ALIGN(8);
+    __bss_end__ = ALIGN(16);
 
     /*secure stack section*/
-    .stack_el1s (NOLOAD):
+    /* align to 0x10000 (2^16 bits) boundary because of stack size*/
+    /* and setting bounds of stack capability with `EXACT` due to bounds compression */
+    /* If you do not align, the tag bit gets cleared when setting the bounds */    
+    .stack_el1s (NOLOAD): ALIGN(65536)
     {
  	    /*. = STACK_START_SECURE; */ /*comment this line out and the stack will be placed at the end of the program section*/
-        . = ALIGN(8);
-        _stack_el1s_start = .;
-        . = . + STACK_SIZE;
-        . = ALIGN(8);
         _stack_el1s_limit = .;
+        . = . + STACK_SIZE;
+        _stack_el1s_base = .;
     } > secure_ram
+    
     
     /*NON-SECURE SECTIONS IF THEY EXIST*/
     
+    /*el1 read only data section*/
+    
+    NONSECUREsection_el1_rodata :
+    {
+    . = ALIGN(16);
+    __NONSECUREsection_el1_rodata_start__ = .;
+    *(.el1_rodata*)
+    __NONSECUREsection_el1_rodata_end__ = .;
+    } > nonsecure_ram
+         
     /*Entry into EL1N assembly*/
     NONSECUREsection_ass :
     {
-    . = ALIGN(8);
+    . = ALIGN(16);
     __NONSECUREsection_ass_start__ = .;
-    *(NONSECURE*)
+    *(.NONSECUREel1entrysection_ass*)
     __NONSECUREsection_ass_end__ = .;
     } > nonsecure_ram
     
     /* c code EL1Nmain function*/
      .NONSECUREsection_c :
   {
-    . = ALIGN(8);
+    . = ALIGN(16);
     __NONSECUREsection_c_start__ = .;
 	*(.NONSECUREsection_c*)
     __NONSECUREsection_c_end__ = .;
   } > nonsecure_ram
      
     /* non secure stack */
-    .stack_el1n (NOLOAD):
+    /* align to 0x10000 (2^16 bits) boundary because of stack size*/
+    /* and setting bounds of stack capability due to bounds compression */
+    /* If you do not align, the tag bit gets cleared when setting the bounds */
+    .stack_el1n (NOLOAD): ALIGN(65536)
     {
     	/*. = STACK_START_NONSECURE;*/ /*comment this line out and the stack will be placed at the end of the program section*/
-        . = ALIGN(8);
-        _stack_el1n_start = .;
-        . = . + STACK_SIZE;
-        . = ALIGN(8);
         _stack_el1n_limit = .;
+        . = . + STACK_SIZE;
+        _stack_el1n_base = .;
     } > nonsecure_ram
     
     end = .;
+    __end__ = .; /* added for Morello-purecap -doesn't compile without this*/
 }
 
 

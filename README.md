@@ -24,7 +24,7 @@ This directory contains a set of projects that can be loaded into the developmen
 1. HelloWorld - Outputs "Hello World" to the console at EL3. `purecap`
 2. EL3-purecap - performs some low level capability tests in assembly to test and explore basic CHERI functionality. `purecap`
 3. MMUEL3 - Changes the MMU set up at EL3 for Morello. `purecap`
-4. EL3ToEL1 - Changes Exception level to either EL1S or EL1N.
+4. EL3ToEL1 - Changes Exception level to either EL1S or EL1N. `purecap`
 5. EL3MMUToEL1MMU - Changes Exception level to either EL1S or EL1N and sets up the MMUs, and secure & non-secure memory regions.
 6. EL3MMUUART - Changes the MMU set up at EL3 for Morello, sets up the UART and writes a message.
 7. EL3MMUToEL1MMUUART - Changes Exception level to either EL1S or EL1N and sets up the MMUs and uart, and writes a message. It also sets up secure & non-secure memory regions.

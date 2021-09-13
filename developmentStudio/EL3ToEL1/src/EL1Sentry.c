@@ -5,6 +5,7 @@
  Version     :
  Copyright   : CAP-TEE 2021
  Description : EL1 secure code
+ Limitations : A heap has not yet been setup
  ============================================================================
  */
 
@@ -12,6 +13,7 @@
 #include <stdlib.h>
 
 int el1smain(void) {
+
 	volatile uint32_t flag = 1;
 
 	puts("now in EL1 secure");
