@@ -3,7 +3,9 @@ This repository contains example code for the Morello Platform. More information
 
 Projects that can be compiled in both *Morello* and *Morello-purecap* have a `purecap` label, otherwise they can only be compiled under *Morello* at present.
 
-Note that these examples have been tested with Development Studio version `armds-morello-edition-2020-1m0.tgz`, FVP version `FVP_Morello_0.11_9` and LLVM version `bare-metal-release-1.0`.
+Note that these examples have been tested with the following combinations:
+* Development Studio version `armds-morello-edition-2020-1m0.tgz`, FVP version `FVP_Morello_0.11_9` and LLVM version `bare-metal-release-1.0`.
+* Development Studio version `armds-morello-edition-2020-1m0.tgz`, FVP version `FVP_Morello_0.11_19` and LLVM version `bare-metal-release-1.2`.
 
 ## Prerequisites
 
@@ -18,6 +20,9 @@ It is assumed that you have already installed the Development Studio (GUI and co
 ### bare-metal-example-scpmcp-binaries:
 
 This directory contains the SCP/MCP binary files in order to run the Morello FVP in bare metal mode. See https://github.com/cap-tee/cheri-docs/blob/main/morello/BareMetalOnMorello/BuildOptions/BuildOptions.md. It is also possible to create these files yourself, but takes some time to generate. see https://github.com/cap-tee/cheri-docs/blob/main/morello/BareMetalOnMorello/YoctoBitbake/YoctoBitbake.md 
+
+* SCPMCPBuiltWithAPreset0x14000000 - for bare metal firmware starting at EL3
+* SCPMCPBuiltWithNoChanges - for bare metal firmware at EL2 (Boot flow examples)
 
 ### developmentStudio
 
