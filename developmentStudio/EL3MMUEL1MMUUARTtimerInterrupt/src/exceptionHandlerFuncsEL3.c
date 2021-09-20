@@ -19,6 +19,8 @@ extern void disableTimerS(void);
 extern uint32_t readIAR0S(void);
 extern void writeEOIR0S(uint32_t);
 
+// get global flag
+extern volatile uint32_t flagEL3;
 
 //************************************
 //fiqHandlerEL3

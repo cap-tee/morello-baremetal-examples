@@ -12,10 +12,6 @@
 #ifndef __exceptionHandlerFuncsEL1S_h
 #define __exceptionHandlerFuncsEL1S_h
 
-//DEFINE GLOBAL FLAG
-//define global flag for timer interrupt, this is used by el1smain() and fiqHandlerEL1S()
-volatile uint32_t flagEL1S;
-
 void fiqHandlerEL1S(void);
 
 #endif

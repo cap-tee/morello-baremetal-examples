@@ -10,9 +10,6 @@
 #ifndef __exceptionHandlerFuncsEL3_h
 #define __exceptionHandlerFuncsEL3_h
 
-//define global flag, this is used by main() and fiqHandlerEL3()
-volatile uint32_t flagEL3;
-
 void fiqHandlerEL3(void);
 
 #endif

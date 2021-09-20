@@ -32,7 +32,7 @@ extern void enableTimerS(void);
 
 //define global flag, this is used by the
 //fiqHandlerEL3 function as well to set the flag
-//volatile uint32_t flagEL3;
+volatile uint32_t flagEL3;
 
 //Main program code of secure EL3
 int main(void)
@@ -63,11 +63,11 @@ int main(void)
 
 	// Perform an ERET to EL1 secure
 	//don't need to set up gicInitS again as using secure group 0
-	//ERETtoEL1S();
+	ERETtoEL1S();
 
 	// Perform an ERET to EL1 normal
-	gicInitN(); //need to set registers differently for non secure group 1
-	ERETtoEL1N();
+	//gicInitN(); //need to set registers differently for non secure group 1
+	//ERETtoEL1N();
 	// Never get here
 	return EXIT_SUCCESS;
 }

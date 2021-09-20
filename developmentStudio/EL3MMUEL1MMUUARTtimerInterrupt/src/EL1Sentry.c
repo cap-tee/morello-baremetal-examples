@@ -25,10 +25,13 @@
 
 //Functions to include
 #include "uartS.h"
-#include "exceptionHandlerFuncsEL1S.h" //include the global flagEL1S flag
 extern void el1smmu(void);
 extern void setTimerTicksS(uint32_t);
 extern void enableTimerS(void);
+
+//DEFINE GLOBAL FLAG
+//define global flag for timer interrupt, this is used by el1smain() and fiqHandlerEL1S()
+volatile uint32_t flagEL1S;
 
 //Main program code of secure EL1
 int el1smain(void)

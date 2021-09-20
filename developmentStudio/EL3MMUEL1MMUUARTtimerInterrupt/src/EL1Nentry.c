@@ -31,6 +31,9 @@
 #define LOCATE_FUNC  __attribute__((__section__(".NONSECUREsection_c")))
 #define LOCATE_STR  __attribute__((__section__(".NONSECUREStringSection_c")))
 #define LOCATE_FLAG  __attribute__((__section__(".NONSECUREflagSection_c")))
+//GLOBAL FLAG
+#define HANDLER_GLOBAL  __attribute__((__section__(".NONSECUREhandlerGlobalSection_c")))
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -40,7 +43,11 @@
 extern void el1nmmu(void);
 extern void setTimerTicksN(uint32_t);
 extern void enableTimerN(void);
-extern uint32_t flagEL1N; //include the global flagEL1N flag
+
+
+//define global flag for timer interrupt, this is used by el1nmain() and irqHandlerEL1N()
+//use the HANDLER_GLOBAL attribute to make sure the variable is put in non secure memory
+volatile uint32_t flagEL1N HANDLER_GLOBAL;
 
 // Define string as a global variable to give it an attribute
 //can't do this!! as only stores the pointer in non secure memory,

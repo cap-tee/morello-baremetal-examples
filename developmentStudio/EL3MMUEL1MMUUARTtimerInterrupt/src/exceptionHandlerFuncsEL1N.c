@@ -28,6 +28,9 @@ extern void disableTimerN(void);
 extern uint32_t readIAR1N(void);
 extern void writeEOIR1N(uint32_t);
 
+// get global flag
+extern volatile uint32_t flagEL1N;
+
 //************************************
 //irqHandlerEL1N
 //************************************

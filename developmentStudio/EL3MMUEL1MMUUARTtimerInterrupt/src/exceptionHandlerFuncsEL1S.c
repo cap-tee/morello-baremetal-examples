@@ -17,10 +17,13 @@
 #include "uartS.h"
 #include "exceptionHandlerFuncsEL1S.h" //include the global flagEL1S flag
 
-//functions used
+// functions used
 extern void disableTimerS(void);
 extern uint32_t readIAR0S(void);
 extern void writeEOIR0S(uint32_t);
+
+// get global flag
+extern volatile uint32_t flagEL1S;
 
 //************************************
 //fiqHandlerEL1S
