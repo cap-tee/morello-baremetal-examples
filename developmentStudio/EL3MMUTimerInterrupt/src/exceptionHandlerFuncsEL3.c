@@ -16,6 +16,8 @@
 extern void disableTimer(void);
 extern uint32_t readIAR0(void);
 extern void writeEOIR0(uint32_t);
+// get global flag
+extern volatile uint32_t flagEL3;
 
 //FIQ exception handler
 //All FIQ's at EL3 come here
@@ -27,7 +29,7 @@ intid = readIAR0();
 //   ID30 = Non-secure Physical Timer Event.
 //   ID29 = Secure Physical Timer Event
 if (intid == 29) {
-	flag = 1;
+	flagEL3 = 1;
 	disableTimer();
 } else {
 	puts("Should never reach here!");
