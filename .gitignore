@@ -5,4 +5,5 @@
 /developmentStudio/**/Debug/src/*.mk
 /developmentStudio/**/Debug/makefile
 /developmentStudio/**/Debug/*.axf
-
+/commandLine/**/output
+/developmentStudio/**/.gitignore
