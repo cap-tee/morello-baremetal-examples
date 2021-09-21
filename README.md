@@ -23,6 +23,7 @@ This directory contains the SCP/MCP binary files in order to run the Morello FVP
 
 * SCPMCPBuiltWithAPreset0x14000000 - for bare metal firmware starting at EL3
 * SCPMCPBuiltWithNoChanges - for bare metal firmware at EL2 (Boot flow examples)
+* loopImage - small loop file to run fvp with Development Studio
 
 ### developmentStudio
 
