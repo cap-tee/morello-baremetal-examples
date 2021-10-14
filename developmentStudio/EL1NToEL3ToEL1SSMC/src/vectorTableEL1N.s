@@ -39,10 +39,10 @@
  // FUNCTIONS
  //****************************************************************************
 
- //****************************************************************************
+ // ------------------------------------------------------------
  // vectorsEL1N
  // Description: Vector table entries
- //****************************************************************************
+ // ------------------------------------------------------------
   .type vectorsEL1N, "function"
 vectorsEL1N:
 
@@ -82,7 +82,7 @@ spx_currentEL_SYNC:
 
   .balign 128
 spx_currentEL_IRQ:
-  B        irqVectorHandler     //        IRQ handler for timer
+  B        IRQVectorHandler     //        IRQ handler for timer
 
   .balign 128
 spx_currentEL_FIQ:
@@ -147,7 +147,7 @@ aarch32_lowerEL_SError:
 // Description: Saves the stack before jumping off to process the
 // actual exception. On return, restores the stack
 //****************************************************************************
-irqVectorHandler:
+IRQVectorHandler:
   //save the stack
   STP      x29, x30, [sp, #-16]!
   STP      x18, x19, [sp, #-16]!

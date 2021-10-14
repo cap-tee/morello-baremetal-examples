@@ -18,31 +18,31 @@
  .align 3                   // Align to 2^3 byte boundary
 
  // Read interrupt ID for Group 1
-  .global readIAR1N
+  .global getIntidAckReg1N
  // Write end of interrupt for Group 1
-  .global writeEOIR1N
+  .global setIntidEndReg1N
 
  //****************************************************************************
  // FUNCTIONS
  //****************************************************************************
 
- //****************************************************************************
- // readIAR1N
+ //-----------------------------------------------------------------------------
+ // getIntidAckReg1N
  // Description: Get the interrupt information for group 1
- //****************************************************************************
- .type readIAR1N, "function"
-readIAR1N:
+ //-----------------------------------------------------------------------------
+ .type getIntidAckReg1N, "function"
+getIntidAckReg1N:
   // Check interrupt ID for Group 1, Note group 0 (secure) has a different register
   // this is group 1 register
   MRS       x0, ICC_IAR1_EL1  // Read ICC_IAR1_EL1 into x0 - INTERUPT ACKNOWLEDGE REGISTER
   RET
 
- //****************************************************************************
- // writeEOIR1N
+ //-----------------------------------------------------------------------------
+ // setIntidEndReg1N
  // Description: signal end of interrupt for Group 1
- //****************************************************************************
- .type writeEOIR1N, "function"
-writeEOIR1N:
+ //-----------------------------------------------------------------------------
+ .type setIntidEndReg1N, "function"
+setIntidEndReg1N:
   // This is group 1 register Interrupt Controller End Of Interrupt Register
   // Note group 0 (secure) has a different register
   MSR        ICC_EOIR1_EL1, x0 // Write x0 to ICC_EOIR1_EL1

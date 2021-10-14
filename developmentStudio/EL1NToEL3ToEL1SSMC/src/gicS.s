@@ -22,15 +22,21 @@ Further work: Take out the code that is common to EL3/EL1S/EL1N and have in sepe
  ============================================================================
  */
 
-//****************************************************************************
-// SECTION AND DEFINES
-//****************************************************************************
+//*****************************************
+// SECTION
+//*****************************************
 
 // should automatically go into secure section of memory
-.section  .SECUREGICS_ass,"ax"         // Define an executable ELF section
-.align 3                   // Align to 2^3 byte boundary
+.section  .SECUREGICS_ass,"ax"
+.align 3
 
-// Defines used for GIC
+//*****************************************
+// DEFINES
+//*****************************************
+
+  // sets up gic
+  .global setupGIC600S
+
 
 // These are the Distributor registers--------------------------------
 // See table 4-2 of GIC-600 doc
@@ -46,9 +52,27 @@ Further work: Take out the code that is common to EL3/EL1S/EL1N and have in sepe
 .equ GICD_CTLR.ARE_NS,		  (1<<5) //Enable affinity routing non secure state
 .equ GICD_CTLR.DS,		      (1<<6) //disable security - not used
 
+// GICD_IGROUPRn - interrupt group registers
+// DIDN'T USE THESE ONES - USED GICR ONES BELOW
+.equ GICD_IGROUPRoffset,	  0x080
+.equ GICD_ISENABLERoffset,    0x100
+.equ GICD_ICENABLERoffset,    0x180
+.equ GICD_ISPENDRoffset,      0x200
+.equ GICD_ICPENDRoffset,      0x280
+.equ GICD_IPRIORITYRoffset,   0x400
+.equ GICD_ICFGRoffset,        0xC00
+.equ GICD_IGRPMODRoffset,     0xD00
+.equ GICD_NSACRoffset,        0xE00
+.equ GICD_SGIR,               0xF00
+// DIDN'T USE THESE ONES
+.equ GICD_IROUTERoffset,      0x6000
+.equ GICD_IROUTER.RM,        (1<<31)
+
 // These are the Redistributor registers LPIs------------------------------
 // See table 4-21 of GIC-600 doc
 .equ RDbase,	                 0x300C0000 // Morello base address
+// NOT USED
+.equ GICR_CTLRoffset,		     0x0
 
 // Power management control register
 .equ GICR_WAKERoffset,		     0x14
@@ -81,27 +105,22 @@ Further work: Take out the code that is common to EL3/EL1S/EL1N and have in sepe
 .equ ICC_SRE_ELn.Enable,     (1<<3) //3 bit set to 1
 .equ ICC_SRE_ELn.SRE,        (1)
 
-// functions to be used outside this file
-  .global gicInitS
+//********************************************
+// FUNCTIONS
+//*******************************************
+//---------------------------------------------
+// set up GIC-600 for Morello, and enable timer interrupt
+//---------------------------------------------
 
-//****************************************************************************
- // FUNCTIONS
- //****************************************************************************
- //----------------------------------------------------------------------------
- // gicInitS
- // Description: Initialize GIC, and enable timer interrupt
- //---------------------------------------------------------------------------- **********************************************************
-  .type gicInitS, "function"
-gicInitS:
-  // Configure Distributor
-  MOV      x0, #GICDbase  // Address of GIC
-
-  // Set ARE bits and group enables in the Distributor
-  // use w2 - least 32 bits of x2 64 bits
+  .type setupGIC600S, "function"
+setupGIC600S:
+  // Set up the Distributor
+  // first get the base address for Morello, and then set up
+  MOV      x0, #GICDbase
   ADD      x1, x0, #GICD_CTLRoffset
   MOV      x2,     #GICD_CTLR.ARE_NS
   ORR      x2, x2, #GICD_CTLR.ARE_S
-  STR      w2, [x1]
+  STR      w2, [x1] // w2 - least 32 bits of x2 64 bits
 
   ORR      x2, x2, #GICD_CTLR.EnableGrp0
   ORR      x2, x2, #GICD_CTLR.EnableGrp1S
@@ -111,7 +130,7 @@ gicInitS:
 
   //********************************************************************************
   // GIC-600 which includes power management of the redistributor
-  // Power on the Redistributor(adapted from gic-x00.c in trusted firmware from c code)
+  // Power on the Redistributor(method adapted from gic-x00.c in trusted firmware from c code)
   // wait until group not transitioning RDGPD==RDGP0
   // 1. get base address
   // 2. get offset address
@@ -169,14 +188,14 @@ l4:  LDR      w0, [x1]
   CBNZ     w3, l4
   //***********************************************************************************************
 
-  // Configure Redistributor
-  // Clearing ProcessorSleep signals core is awake
+  // setup Redistributor
+  // Clear ProcessorSleep signals core is awake
   MOV      x0, #RDbase
   MOV      x1, #GICR_WAKERoffset
   ADD      x1, x1, x0
   STR      wzr, [x1]
   DSB      SY
-1:   // We now have to wait for sleep to read 0
+1:// wait for sleep to read 0
   LDR      w0, [x1]
   MOV      x2, #GICR_WAKER.ProcessorSleep
   MOV      X3, #GICR_WAKER.ChildrenAsleep
@@ -184,9 +203,8 @@ l4:  LDR      w0, [x1]
   AND      w0, w0, w2
   CBNZ     w0, 1b
 
-  // Configure CPU interface
-  // We need to set the SRE bits for each EL to enable
-  // access to the interrupt controller registers
+  // set up CPU interface
+  // set SRE bits for each EL for access to the interrupt controller registers
   // Setting the enable bit does the following:
   //   a.Secure EL1 accesses to Secure ICC_SRE_EL1 do not trap to EL3.
   //   b.Non-secure EL1 accesses to ICC_SRE_EL1 do not trap to EL3
@@ -198,7 +216,7 @@ l4:  LDR      w0, [x1]
   MSR      ICC_SRE_EL3, x0
   ISB
 
-  //changed for exception layers.............
+  //need for exception layers.............
  //Setting the SRE bit means the Interrupt controller System register interface for EL1 is enabled.
   MOV      x0, #ICC_SRE_ELn.SRE
   MSR      ICC_SRE_EL1, x0
@@ -268,5 +286,4 @@ l4:  LDR      w0, [x1]
   //*********************************************************
 
   RET
-
 

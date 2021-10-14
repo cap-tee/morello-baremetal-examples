@@ -62,7 +62,7 @@
 // Assembly functions to include
 extern void el1nmmu(void); //mmu set up
 extern void setTimerTicksN(uint32_t);
-extern void enableTimerN(void); //timerN.s
+extern void startTimerN(void); //timerN.s
 extern void smcPassMesgN(void); //smcEL1N.s
 extern void smcPassMesgN_inc(void); //smcEL1N.s
 
@@ -146,8 +146,8 @@ int LOCATE_FUNC el1nmain(void)
 	flagEL1N = 0;
 	uartNTransmitString(uartstr1);
 	setTimerTicksN(0xFFFF);  // Generate an interrupt in ticks
-	// enable the timer
-	enableTimerN();
+	// start the timer
+	startTimerN();
 	// Wait for the interrupt to arrive
 	while(flagEL1N==0){}
     //**************************************************

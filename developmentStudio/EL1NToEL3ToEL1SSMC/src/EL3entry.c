@@ -36,11 +36,11 @@ extern void ERETtoEL1S(void);
 extern void ERETtoEL1N(void);
 extern void el3mmu(void);
 
-extern void gicInitS(void); // for secure timer interrupt
-extern void gicInitN(void); //for non secure timer set up but goes in EL3 so secure mem
+extern void setupGIC600S(void); // for secure timer interrupt
+extern void setupGIC600N(void); //for non secure timer set up but goes in EL3 so secure mem
 extern void setRegInstallVectors(void);
 extern void setTimerTicksS(uint32_t);
-extern void enableTimerS(void);
+extern void startTimerS(void);
 
 
 //Main program code of secure EL3
@@ -75,14 +75,14 @@ int main(void)
 
 	// Start off in the Normal World by default
 	// use the timer to slow down the speed
-	gicInitN(); // need to set registers differently for non secure group 1
+	setupGIC600N(); // need to set registers differently for non secure group 1
 	// Perform an ERET to EL1 non secure
 	ERETtoEL1N();
 
 
     // Or start off in the secure world
 	// use the timer to slow down the speed
-	//gicInitS(); // need to set registers differently for secure group 0
+	//setupGIC600S(); // need to set registers differently for secure group 0
 	// Perform an ERET to EL1 secure
 	//ERETtoEL1S();
 
@@ -93,12 +93,12 @@ int main(void)
 	// TIMER INTERRUPT AT EL3 NOT USED
 	// CODE INCLUDED FOR REFERENCE
 	// Initialize memory mapped GIC registers, and enable timer interrupt
-	//gicInitS();
+	//setupGIC600S();
 	//puts("Initialised GIC");
 	// set up the timer interrupt
 	//flagEL3 = 0;
 	//setTimerTicksS(0x0010);  // Generate an interrupt in 1000 ticks
-	//enableTimerS();
+	//startTimerS();
 	// Wait for the interrupt to arrive
 	//while(flagEL3==0){}
 	//puts("got interrupt AT EL3");

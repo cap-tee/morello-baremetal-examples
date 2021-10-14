@@ -31,14 +31,14 @@
 #include "uartS.h" //include writing messages to secure uart
 
 //extern functions used
-extern void disableTimerS(void);   //timerS.s
-extern uint32_t readIAR0S(void);   // interrupt register information interruptRegS.s
-extern void writeEOIR0S(uint32_t); // interrupt register information interruptRegS.s
+extern void stopTimerS(void);   //timerS.s
+extern uint32_t getIntidAckReg0S(void);   // interrupt register information interruptRegS.s
+extern void setIntidEndReg0S(uint32_t); // interrupt register information interruptRegS.s
 extern uint32_t readESREL3(void);  //exception information for EL3 exceptionRegEL3.s file
 
-extern void gicInitS(void);   // for secure timer interrupt gicS.s
+extern void setupGIC600S(void);   // for secure timer interrupt gicS.s
 extern void ERETtoEL1S(void); //regForEL1S.s
-extern void gicInitN(void);   // for non secure timer interrupt gicN.s
+extern void setupGIC600N(void);   // for non secure timer interrupt gicN.s
 extern void ERETtoEL1N(void); //regForEL1N.s
 
 //*****************************************
@@ -102,7 +102,7 @@ void syncHandlerEL3(void)
 				// Initialise GIC registers for the secure world
 				// NEED TO CHANGE THIS SO ONLY INCLUDE WHAT REGS NEED CHANGING HERE
 				// NOT ALL NEEDED
-				gicInitS();
+				setupGIC600S();
 				// puts("Initialised GIC for secure, about to ERET to EL1S...");
 				// Perform an ERET to EL1 secure
 				ERETtoEL1S();
@@ -127,7 +127,7 @@ void syncHandlerEL3(void)
 				// Initialise GIC registers for the non secure world
 				// NEED TO CHANGE THIS SO ONLY INCLUDE WHAT REGS NEED CHANGING HERE
 				// NOT ALL NEEDED
-				gicInitN();
+				setupGIC600N();
 				// puts("Initialised GIC for secure, about to ERET to EL1S...");
 				// Perform an ERET to EL1 non secure
 				ERETtoEL1N();
@@ -183,7 +183,7 @@ void fiqHandlerEL3(void)
 {
 uint32_t intid;
 // read group 0 interrupt acknowledge register
-intid = readIAR0S();
+intid = getIntidAckReg0S();
 puts("inside fiqHandlerEL3");
 // Secure and non-secure timer events have different interrupt IDs
 //   ID30 = Non-secure Physical Timer Event.
@@ -192,12 +192,13 @@ if (intid == 29)
 {
 	puts("ID is 29"); // must be 29 if here
 	flagEL3 = 1;
-	disableTimerS();
-} else
-{
-	// should never get here
+	stopTimerS();
 }
-// write end of interrupt for ID 29 - group 0 register
-writeEOIR0S(intid);
+else
+{
+	// error
+}
+// set end of interrupt for ID 29 - group 0 register
+setIntidEndReg0S(intid);
 return;
 }

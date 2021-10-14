@@ -22,10 +22,10 @@
 
  // sets timer length
  .global setTimerTicksN
- //enableTimerN - enables the non secure timer
- .global enableTimerN
- //disableTimerN - disables the non secure timer
- .global disableTimerN
+ //startTimerN - starts the non secure timer
+ .global startTimerN
+ //stopTimerN - stops the non secure timer
+ .global stopTimerN
 
 //********************************************
 // FUNCTIONS
@@ -42,20 +42,20 @@ setTimerTicksN:
   RET
 
 //---------------------------------------------
-//enableTimerN - enables the non secure timer
+//startTimerN - start the non secure timer
 //---------------------------------------------
-  .type enableTimerN, "function"
-enableTimerN:
+  .type startTimerN, "function"
+startTimerN:
   MOV    x0, #0x1          //Set Enable bit, and clear Mask bit
   MSR    CNTP_CTL_EL0, x0  //non secure timer NOTE: different register to the secure timer
   ISB
   RET
 
 //---------------------------------------------
-//disableTimerN - disables the non secure timer
+//stopTimerN - stops the non secure timer
 //---------------------------------------------
-  .type disableTimerN, "function"
-disableTimerN:
+  .type stopTimerN, "function"
+stopTimerN:
   MSR    CNTP_CTL_EL0, xzr //non secure timer clear enable bit NOTE: different register to the secure timer
   ISB
   RET

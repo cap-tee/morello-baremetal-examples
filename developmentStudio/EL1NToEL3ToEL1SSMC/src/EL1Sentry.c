@@ -47,7 +47,7 @@
 #include "mesgEL1S.h" //secure message functions
 extern void el1smmu(void);
 extern void setTimerTicksS(uint32_t);
-extern void enableTimerS(void);
+extern void startTimerS(void);
 extern void smcPassMesgS(void); //smcEL1S.s
 
 //Main program code of secure EL1
@@ -106,7 +106,7 @@ int el1smain(void)
 	flagEL1S = 0;
 	uartSTransmitString(uartstr1);
 	setTimerTicksS(0xFFFF);  // Generate an interrupt in ticks
-	enableTimerS();
+	startTimerS();
 	// Wait for the interrupt to arrive
 	while(flagEL1S==0){}
 	//**************************************************
