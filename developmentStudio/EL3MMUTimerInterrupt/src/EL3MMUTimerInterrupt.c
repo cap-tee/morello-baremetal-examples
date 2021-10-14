@@ -11,12 +11,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "exceptionHandlerFuncsEL3.h" //include the global flagEL3 flag
+#include "exceptionHandlerFuncsEL3.h"
 extern void el3mmu(void);
-extern void gicInit(void);
+extern void setupGIC600(void);
 extern void setRegInstallVectors(void);
 extern void setTimerTicks(uint32_t);
-extern void enableTimer(void);
+extern void startTimer(void);
 
 
 //define global flag, this is used by the
@@ -34,12 +34,12 @@ int main(void) {
 	setRegInstallVectors();
 	puts("Installed vector table");
 	// Initialize memory mapped GIC registers, and enable timer interrupt
-	gicInit();
+	setupGIC600();
 	puts("Initialised GIC");
 	// set up the timer interrupt
 	flagEL3 = 0;
 	setTimerTicks(0x1000);  // Generate an interrupt in 1000 ticks
-	enableTimer();
+	startTimer();
 	// Wait for the interrupt to arrive
 	while(flagEL3==0){}
 	puts("got interrupt");

@@ -10,12 +10,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "exceptionHandlerFuncsEL3.h" //include the global flagEL3 flag
+#include "exceptionHandlerFuncsEL3.h"
 
 //functions used
-extern void disableTimer(void);
-extern uint32_t readIAR0(void);
-extern void writeEOIR0(uint32_t);
+extern void stopTimer(void);
+extern uint32_t getIntidAckReg0(void);
+extern void setIntidEndReg0(uint32_t);
 // get global flag
 extern volatile uint32_t flagEL3;
 
@@ -24,16 +24,21 @@ extern volatile uint32_t flagEL3;
 void fiqHandlerEL3(void)
 {
 uint32_t intid;
-intid = readIAR0();
+//get the interrupt ID - group0 - should be 29
+intid = getIntidAckReg0();
 // Secure and non-secure timer events have different interrupt IDs
 //   ID30 = Non-secure Physical Timer Event.
 //   ID29 = Secure Physical Timer Event
-if (intid == 29) {
+if (intid == 29)
+	{
 	flagEL3 = 1;
-	disableTimer();
-} else {
-	puts("Should never reach here!");
-}
-writeEOIR0(intid);
+	stopTimer();
+	}
+else
+	{
+	puts("oops! intid is not 29!");
+	}
+//set interrupt end for intid
+setIntidEndReg0(intid);
 return;
 }

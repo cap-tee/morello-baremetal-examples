@@ -43,6 +43,8 @@
                                 								
                                 <option id="com.arm.llvm.tool.c.compiler.base.option.arch.480394945" name="Architecture (-march)" superClass="com.arm.llvm.tool.c.compiler.base.option.arch" useByScannerDiscovery="true" value="morello" valueType="string"/>
                                 								
+                                <option id="com.arm.llvm.tool.c.compiler.base.option.abi.1146927939" name="ABI (-mabi)" superClass="com.arm.llvm.tool.c.compiler.base.option.abi" useByScannerDiscovery="true" value="" valueType="string"/>
+                                								
                                 <inputType id="com.arm.llvm.tool.c.compiler.base.input.836305942" superClass="com.arm.llvm.tool.c.compiler.base.input"/>
                                 							
                             </tool>
@@ -57,6 +59,10 @@
                             							
                             <tool id="com.arm.llvm.tool.assembler.base.var.llvm-11.0.0.1159613473" name="LLVM Assembler 11.0.0" superClass="com.arm.llvm.tool.assembler.base.var.llvm-11.0.0">
                                 								
+                                <option id="com.arm.llvm.tool.assembler.base.option.arch.444183299" name="Architecture (-march)" superClass="com.arm.llvm.tool.assembler.base.option.arch" useByScannerDiscovery="true" value="morello" valueType="string"/>
+                                								
+                                <option id="com.arm.llvm.tool.assembler.base.option.abi.1084196487" name="ABI (-mabi)" superClass="com.arm.llvm.tool.assembler.base.option.abi" useByScannerDiscovery="true" value="" valueType="string"/>
+                                								
                                 <inputType id="com.arm.llvm.tool.assembler.base.input.984511758" superClass="com.arm.llvm.tool.assembler.base.input"/>
                                 							
                             </tool>
@@ -70,6 +76,8 @@
                                     <listOptionValue builtIn="false" value="-T/home/osboxes/projects/morello-baremetal-examples/developmentStudio/EL3MMUTimerInterrupt/src/linker-script.ld -v"/>
                                     								
                                 </option>
+                                								
+                                <option id="com.arm.llvm.tool.c.linker.base.option.abi.229660421" name="ABI (-mabi)" superClass="com.arm.llvm.tool.c.linker.base.option.abi" useByScannerDiscovery="true" value="" valueType="string"/>
                                 								
                                 <inputType id="com.arm.llvm.tool.c.linker.base.input.170888367" superClass="com.arm.llvm.tool.c.linker.base.input">
                                     									
@@ -212,5 +220,7 @@
     <storageModule moduleId="com.arm.projectSettings" version="6.0.0"/>
     	
     <storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
+    	
+    <storageModule moduleId="refreshScope"/>
     
 </cproject>

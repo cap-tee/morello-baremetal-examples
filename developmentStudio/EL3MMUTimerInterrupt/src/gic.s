@@ -1,6 +1,6 @@
 /*
  ============================================================================
- Name        : gicS.s
+ Name        : gic.s
  Author      : CAP-TEE
  Version     :
  Copyright   : CAP-TEE 2021
@@ -22,11 +22,24 @@ Further work: Take out the code that is common to EL3/EL1S/EL1N and have in sepe
  ============================================================================
  */
 
-// should automatically go into secure section of memory
-.section  .SECUREGICS_ass,"ax"         // Define an executable ELF section
-.align 3                   // Align to 2^3 byte boundary
+//*****************************************
+// SECTION
+//*****************************************
 
-// Defines used for GIC
+// should automatically go into secure section of memory
+.section  .SECUREGICS_ass,"ax"
+.align 3
+
+//*****************************************
+// DEFINES
+//*****************************************
+
+  // sets up gic
+  .global setupGIC600
+  // gets the interrupt id from interrupt ack reg - group 0
+  .global getIntidAckReg0
+  // sets the interrupt id in the end of interrupt reg - group 0
+  .global setIntidEndReg0
 
 // These are the Distributor registers--------------------------------
 // See table 4-2 of GIC-600 doc
@@ -95,22 +108,22 @@ Further work: Take out the code that is common to EL3/EL1S/EL1N and have in sepe
 .equ ICC_SRE_ELn.Enable,     (1<<3) //3 bit set to 1
 .equ ICC_SRE_ELn.SRE,        (1)
 
-  // ***********************************************************
-  // Initialize GIC, and enable timer interrupt
-  // **********************************************************
+//********************************************
+// FUNCTIONS
+//*******************************************
+//---------------------------------------------
+// set up GIC-600 for Morello, and enable timer interrupt
+//---------------------------------------------
 
-  .global gicInit
-  .type gicInit, "function"
-gicInit:
-  // Configure Distributor
-  MOV      x0, #GICDbase  // Address of GIC
-
-  // Set ARE bits and group enables in the Distributor
-  // use w2 - least 32 bits of x2 64 bits
+  .type setupGIC600, "function"
+setupGIC600:
+  // Set up the Distributor
+  // first get the base address for Morello, and then set up
+  MOV      x0, #GICDbase
   ADD      x1, x0, #GICD_CTLRoffset
   MOV      x2,     #GICD_CTLR.ARE_NS
   ORR      x2, x2, #GICD_CTLR.ARE_S
-  STR      w2, [x1]
+  STR      w2, [x1] // w2 - least 32 bits of x2 64 bits
 
   ORR      x2, x2, #GICD_CTLR.EnableGrp0
   ORR      x2, x2, #GICD_CTLR.EnableGrp1S
@@ -120,7 +133,7 @@ gicInit:
 
   //********************************************************************************
   // GIC-600 which includes power management of the redistributor
-  // Power on the Redistributor(adapted from gic-x00.c in trusted firmware from c code)
+  // Power on the Redistributor(method adapted from gic-x00.c in trusted firmware from c code)
   // wait until group not transitioning RDGPD==RDGP0
   // 1. get base address
   // 2. get offset address
@@ -178,14 +191,14 @@ l4:  LDR      w0, [x1]
   CBNZ     w3, l4
   //***********************************************************************************************
 
-  // Configure Redistributor
-  // Clearing ProcessorSleep signals core is awake
+  // setup Redistributor
+  // Clear ProcessorSleep signals core is awake
   MOV      x0, #RDbase
   MOV      x1, #GICR_WAKERoffset
   ADD      x1, x1, x0
   STR      wzr, [x1]
   DSB      SY
-1:   // We now have to wait for sleep to read 0
+1:// wait for sleep to read 0
   LDR      w0, [x1]
   MOV      x2, #GICR_WAKER.ProcessorSleep
   MOV      X3, #GICR_WAKER.ChildrenAsleep
@@ -193,9 +206,8 @@ l4:  LDR      w0, [x1]
   AND      w0, w0, w2
   CBNZ     w0, 1b
 
-  // Configure CPU interface
-  // We need to set the SRE bits for each EL to enable
-  // access to the interrupt controller registers
+  // set up CPU interface
+  // set SRE bits for each EL for access to the interrupt controller registers
   // Setting the enable bit does the following:
   //   a.Secure EL1 accesses to Secure ICC_SRE_EL1 do not trap to EL3.
   //   b.Non-secure EL1 accesses to ICC_SRE_EL1 do not trap to EL3
@@ -207,7 +219,7 @@ l4:  LDR      w0, [x1]
   MSR      ICC_SRE_EL3, x0
   ISB
 
-  //changed for exception layers.............
+  //need for exception layers.............
  //Setting the SRE bit means the Interrupt controller System register interface for EL1 is enabled.
   MOV      x0, #ICC_SRE_ELn.SRE
   MSR      ICC_SRE_EL1, x0
@@ -278,25 +290,27 @@ l4:  LDR      w0, [x1]
 
   RET
 
-  // ------------------------------------------------------------
-  // This goes in secure memory automatically
-  .global readIAR0
-  .type readIAR0, "function"
-readIAR0:
+//---------------------------------------------
+// gets the interrupt id from interrupt ack reg
+//---------------------------------------------
+  .type getIntidAckReg0, "function"
+getIntidAckReg0:
    // Check interrupt ID for Group 0
   // EL3 can access EL1 registers, but EL1 can not access EL3 registers
   // this is group 0 register
-  MRS       x0, ICC_IAR0_EL1  // Read ICC_IAR0_EL1 into x0 - INTERUPT ACKNOWLEDGE REGISTER
+  // Read interrupt acknowledge register into x0
+  MRS       x0, ICC_IAR0_EL1
   RET
 
-// ------------------------------------------------------------
-
-  .global writeEOIR0
-  .type writeEOIR0, "function"
-writeEOIR0:
+//---------------------------------------------
+// sets the interrupt id in the end of interrupt reg
+//---------------------------------------------
+  .type setIntidEndReg0, "function"
+setIntidEndReg0:
   // signal end of interrupt for Group 0
   // EL3 can access EL1 registers, but EL1 can not access EL3 registers
   // this is group 0 register Interrupt Controller End Of Interrupt Register
-  MSR        ICC_EOIR0_EL1, x0 // Write x0 to ICC_EOIR0_EL1
+  //// Write x0 to end of interrupt reg
+  MSR        ICC_EOIR0_EL1, x0
   RET
 
