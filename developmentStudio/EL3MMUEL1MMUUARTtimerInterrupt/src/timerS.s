@@ -8,33 +8,55 @@
  			   The CNTPS_TVAL_EL1 and CNTPS_CTL_EL1 registers are for the secure timer
  ============================================================================
  */
+
+//*****************************************
+// SECTION
+//*****************************************
   // this needs to go in secure memory
   .section  .SECUREtimer_ass,"ax"
   .align 3
 
-  // setTimerTicksS - void setTimerTicks(uint32_t value), the parameter is stored in x0
-  // Sets the value of the Secure EL1 Physical Timer Value Register (CNTPS_TVAL_EL1)
-  .global setTimerTicksS
+//*****************************************
+// DEFINES
+//*****************************************
+
+ // sets timer length
+ .global setTimerTicksS
+ //startTimer - enables the non secure timer
+ .global startTimerS
+ //stopTimer - disables the non secure timer
+ .global stopTimerS
+
+ //********************************************
+// FUNCTIONS
+//*******************************************
+//---------------------------------------------
+// setTimerTicksS - secure timer
+// NOTE: different register to the non secure timer
+//---------------------------------------------
   .type setTimerTicksS, "function"
 setTimerTicksS:
-  MSR     CNTPS_TVAL_EL1, x0 //secure timer, NOTE: different register to the non secure timer
+  MSR     CNTPS_TVAL_EL1, x0
   ISB
   RET
    
-  //enableTimerS - enables the secure timer
-  .global enableTimerS
-  .type enableTimerS, "function"
-enableTimerS:
-  MOV    x0, #0x1           // Set enable bit, and clear mask bit
-  MSR    CNTPS_CTL_EL1, x0  //secure timer,  NOTE: different register to the non secure timer
+//---------------------------------------------
+// startTimerS - starts the secure timer
+// NOTE: different register to the non secure timer
+//---------------------------------------------
+  .type startTimerS, "function"
+startTimerS:
+  MOV    x0, #0x1
+  MSR    CNTPS_CTL_EL1, x0
   ISB
   RET
 
-  //disableTimerS - disables the secure timer
-  .global disableTimerS
-  .type disableTimerS, "function"
-disableTimerS:
-  MSR    CNTPS_CTL_EL1, xzr // secure timer, clear the enable bit,  NOTE: different register to the non secure timer
+//---------------------------------------------
+// stopTimerS - stops the secure timer
+// NOTE: different register to the non secure timer
+//---------------------------------------------
+  .type stopTimerS, "function"
+stopTimerS:
+  MSR    CNTPS_CTL_EL1, xzr
   ISB
   RET
-

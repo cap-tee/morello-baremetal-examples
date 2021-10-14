@@ -8,32 +8,55 @@
  			   The CNTP_TVAL_EL0 and CNTP_CTL_EL0 registers are for the non secure physical timer
  ============================================================================
  */
+
+//*****************************************
+// SECTION
+//*****************************************
   // this needs to go in non secure memory by the linker script
   .section  .NONSECUREtimer_ass,"ax"
   .align 3
 
-  // setTimerTicksN - void setTimerTicks(uint32_t value), the parameter is stored in x0
-  // Sets the value of the non Secure EL1 Physical Timer Value Register (CNTP_TVAL_EL1)
-  .global setTimerTicksN
+//*****************************************
+// DEFINES
+//*****************************************
+
+ // sets timer length
+ .global setTimerTicksN
+ //startTimer - enables the non secure timer
+ .global startTimerN
+ //stopTimer - disables the non secure timer
+ .global stopTimerN
+
+//********************************************
+// FUNCTIONS
+//*******************************************
+//---------------------------------------------
+// setTimerTicksN - non secure timer
+// NOTE: different register to the secure timer
+//---------------------------------------------
   .type setTimerTicksN, "function"
 setTimerTicksN:
-  MSR     CNTP_TVAL_EL0, x0 //non secure timer - NOTE: different register to the secure timer
-  ISB
-  RET
-   
-  //enableTimerN - enables the non secure timer
-  .global enableTimerN
-  .type enableTimerN, "function"
-enableTimerN:
-  MOV    x0, #0x1          //Set Enable bit, and clear Mask bit
-  MSR    CNTP_CTL_EL0, x0  //non secure timer NOTE: different register to the secure timer
+  MSR     CNTP_TVAL_EL0, x0
   ISB
   RET
 
-  //disableTimerN - disables the non secure timer
-  .global disableTimerN
-  .type disableTimerN, "function"
-disableTimerN:
-  MSR    CNTP_CTL_EL0, xzr //non secure timer clear enable bit NOTE: different register to the secure timer
+//---------------------------------------------
+// startTimerN - starts the non secure timer
+// NOTE: different register to the secure timer
+//---------------------------------------------
+  .type startTimerN, "function"
+startTimerN:
+  MOV    x0, #0x1
+  MSR    CNTP_CTL_EL0, x0
+  ISB
+  RET
+
+//---------------------------------------------
+// stopTimerN - stops the non secure timer
+// NOTE: different register to the secure timer
+//---------------------------------------------
+  .type stopTimerN, "function"
+stopTimerN:
+  MSR    CNTP_CTL_EL0, xzr
   ISB
   RET

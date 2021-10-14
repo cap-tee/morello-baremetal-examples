@@ -18,9 +18,9 @@
 #include "exceptionHandlerFuncsEL1S.h" //include the global flagEL1S flag
 
 // functions used
-extern void disableTimerS(void);
-extern uint32_t readIAR0S(void);
-extern void writeEOIR0S(uint32_t);
+extern void stopTimerS(void);
+extern uint32_t getIntidAckReg0S(void);
+extern void setIntidEndReg0S(uint32_t);
 
 // get global flag
 extern volatile uint32_t flagEL1S;
@@ -36,8 +36,8 @@ extern volatile uint32_t flagEL1S;
 void fiqHandlerEL1S(void)
 {
 uint32_t intid;
-//read group 0 interrupt acknowledge register
-intid = readIAR0S();
+//get group 0 interrupt acknowledge register
+intid = getIntidAckReg0S();
 uartSTransmitString("inside fiqHandlerEL1S\n");
 // Secure and non-secure timer events have different interrupt IDs
 //   ID30 = Non-secure Physical Timer Event.
@@ -46,13 +46,13 @@ if (intid == 29)
 {
 	uartSTransmitString("ID is 29\n"); //must be 29 if here
 	flagEL1S = 1;
-	//disable secure timer
-	disableTimerS();
+	//stop secure timer
+	stopTimerS();
 } else
 {
-	//Should never get here
+	//error
 }
-//write end of interrupt for ID 29 - group 0 register
-writeEOIR0S(intid);
+//set end of interrupt for ID 29 - group 0 register
+setIntidEndReg0S(intid);
 return;
 }

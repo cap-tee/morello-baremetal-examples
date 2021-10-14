@@ -19,19 +19,35 @@
                defined in exceptionHandlerFuncsEL1S
  ============================================================================
  */
- /*This section needs to go into secure memory region */
+
+ //****************************************************************************
+ // SECTION AND DEFINES
+ //****************************************************************************
+ // This section needs to go into secure memory region
   .section  .SECUREvectortableel1S_ass,"ax"
   .align 12
- 
+
+  // Vector Table function for EL1S - used outside this file
   .global vectorsEL1S
+  // exception handler function, which is defined in the exceptionHandlerFuncsEL1S.c
+  .global fiqHandlerEL1S
+
+ //****************************************************************************
+ // FUNCTIONS
+ //****************************************************************************
+
+ // ------------------------------------------------------------
+ // vectorsEL1S
+ // Description: Vector table entries
+ // ------------------------------------------------------------
+
   .type vectorsEL1S, "function"
 vectorsEL1S:
 
-// exception handler function, which is defined in the exceptionHandlerFuncsEL1S.c
-  .global fiqHandlerEL1S
-
 // ------------------------------------------------------------
-// Current EL with SP0 - program state 0  - 0X04 EL1
+// Current EL with SP0
+// This block of four entries are associated with exceptions
+// that have been triggered from EL3 whilst in program state 0 - 0X04 EL1
 // ------------------------------------------------------------
 
   .balign 128
@@ -51,7 +67,9 @@ sp0_currentEL_SError:
   B        .                    //        SError
 
 // ------------------------------------------------------------
-// Current EL with SPx - program state 1  - 0x05 EL1
+// Current EL with SPx
+// This block of four entries are associated with exceptions
+// that have been triggered from EL3 whilst in program state 1 - 0x05 EL1
 // ------------------------------------------------------------
 
   .balign 128
@@ -64,7 +82,7 @@ spx_currentEL_IRQ:
 
   .balign 128
 spx_currentEL_FIQ:
-  B        fiqFirstLevelHandler //        FIQ
+  B        FIQVectorHandler		 //        FIQ
 
   .balign 128
 spx_currentEL_SError:
@@ -72,6 +90,9 @@ spx_currentEL_SError:
 
 // ------------------------------------------------------------
 // Lower EL using AArch64
+// This block of four entries are associated with exceptions
+// that have been triggered from a lower EL, which would be EL1N
+// or EL1S using AArch64. This is where SMC exception goes
 // ------------------------------------------------------------
 
   .balign 128
@@ -90,8 +111,12 @@ aarch64_lowerEL_FIQ:
 aarch64_lowerEL_SError:
   B        .                    //        SError
 
+
 // ------------------------------------------------------------
 // Lower EL using AArch32
+// This block of four entries are associated with exceptions
+// that have been triggered from a lower EL, which would be EL1N
+// or EL1S using AArch32.
 // ------------------------------------------------------------
 
   .balign 128
@@ -111,9 +136,14 @@ aarch32_lowerEL_SError:
   B        .                    //        SError
 
 
+//****************************************************************
+
+// ------------------------------------------------------------
+//FIQVectorHandler:
+//function to capture timer interrupt
 // ------------------------------------------------------------
 
-fiqFirstLevelHandler:
+FIQVectorHandler:
 
   STP      x29, x30, [sp, #-16]!
   STP      x18, x19, [sp, #-16]!

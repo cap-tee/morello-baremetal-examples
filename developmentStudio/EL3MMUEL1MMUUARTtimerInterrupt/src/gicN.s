@@ -22,11 +22,22 @@ Further work: Take out the code that is common to EL3/EL1S/EL1N and have in sepe
  ============================================================================
  */
 
+//*****************************************
+// SECTION
+//*****************************************
+
 // should automatically go into secure section of memory
 .section .SECUREgicsection_ass, "ax"
-.align 3                   // Align to 2^3 byte boundary
+.align 3
 
-// Defines used for GIC
+//*****************************************
+// DEFINES
+//*****************************************
+
+// sets up gic
+
+  // sets up gic
+  .global setupGIC600N
 
 // These are the Distributor registers--------------------------------
 // See table 4-2 of GIC-600 doc
@@ -94,22 +105,23 @@ Further work: Take out the code that is common to EL3/EL1S/EL1N and have in sepe
 .equ ICC_SRE_ELn.Enable,     (1<<3) //3 bit set to 1
 .equ ICC_SRE_ELn.SRE,        (1)
 
-  // ***********************************************************
-  // Initialize GIC, and enable timer interrupt
-  // **********************************************************
+//********************************************
+// FUNCTIONS
+//*******************************************
+//---------------------------------------------
+// set up GIC-600 for Morello, and enable timer interrupt
+//---------------------------------------------
 
-  .global gicInitN
-  .type gicInitN, "function"
-gicInitN:
-  // Configure Distributor***********************************
-  MOV      x0, #GICDbase  // Address of GIC
 
-  // Set ARE bits and group enables in the Distributor
-  // use w2 - least 32 bits of x2 64 bits
+  .type setupGIC600N, "function"
+setupGIC600N:
+  // set up Distributor
+  // first get the base address for Morello, and then set up
+  MOV      x0, #GICDbase
   ADD      x1, x0, #GICD_CTLRoffset
   MOV      x2,     #GICD_CTLR.ARE_NS
   ORR      x2, x2, #GICD_CTLR.ARE_S
-  STR      w2, [x1]
+  STR      w2, [x1] // use w2 - least 32 bits of x2 64 bits
 
   ORR      x2, x2, #GICD_CTLR.EnableGrp0
   ORR      x2, x2, #GICD_CTLR.EnableGrp1S
@@ -177,14 +189,14 @@ l4:  LDR      w0, [x1]
   CBNZ     w3, l4
   //***********************************************************************************************
 
-  // Configure Redistributor
-  // Clearing ProcessorSleep signals core is awake
+  // setup Redistributor
+  // Clear ProcessorSleep signals core is awake
   MOV      x0, #RDbase
   MOV      x1, #GICR_WAKERoffset
   ADD      x1, x1, x0
   STR      wzr, [x1]
   DSB      SY
-1:   // We now have to wait for sleep to read 0
+1:   // wait for sleep to read 0
   LDR      w0, [x1]
   MOV      x2, #GICR_WAKER.ProcessorSleep
   MOV      X3, #GICR_WAKER.ChildrenAsleep
@@ -193,7 +205,7 @@ l4:  LDR      w0, [x1]
   CBNZ     w0, 1b
 
 
-  // Configure CPU interface
+  // set up CPU interface
   // We need to set the SRE bits for each EL to enable
   // access to the interrupt controller registers
   // Setting the enable bit does the following:
@@ -210,7 +222,7 @@ l4:  LDR      w0, [x1]
   //MSR      ICC_SRE_EL2, x0
   //ISB
 
-  // changed for exception layers.............
+  // need for exception layers.............
   // Setting the SRE bit means the Interrupt controller System register interface for EL1 is enabled.
   MOV      x0, #ICC_SRE_ELn.SRE
   MSR      ICC_SRE_EL1, x0
@@ -237,7 +249,7 @@ l4:  LDR      w0, [x1]
   //*********************************************************************
 
 
-  // ****Set non secure physical timer (ID 30)*******************************8
+  // ****Set non secure physical timer (ID 30)*******************************
   // This system is secure aware (GICD_CTLR.DS==0 )
   MOV      x0, #SGIbase       // Address of Redistributor registers
 
@@ -302,12 +314,30 @@ l4:  LDR      w0, [x1]
   RET
 
   // ------------------------------------------------------------
-  // This needs to go in non secure memory by linker script
+//*****************************************
+// SECTION
+//*****************************************
+// This needs to go in non secure memory by linker script
   .section .NONSECUREgicsection_ass, "ax"
-  .align 3                   // Align to 2^3 byte boundary
-  .global readIAR1N
-  .type readIAR1N, "function"
-readIAR1N:
+  .align 3
+
+//*****************************************
+// DEFINES
+//*****************************************
+
+  // gets the interrupt id from interrupt ack reg - group 1
+  .global getIntidAckReg1N
+  // sets the interrupt id in the end of interrupt reg - group 1
+  .global setIntidEndReg1N
+
+//********************************************
+// FUNCTIONS
+//*******************************************
+//---------------------------------------------
+// gets the interrupt id from interrupt ack reg - group1
+//---------------------------------------------
+  .type getIntidAckReg1N, "function"
+getIntidAckReg1N:
   // Check interrupt ID for Group 1
   // EL3 can access EL1 registers, but EL1 can not access EL3 registers
   // this is group 0 register
@@ -315,10 +345,11 @@ readIAR1N:
   // this is group 1 register
   MRS       x0, ICC_IAR1_EL1  // Read ICC_IAR1_EL1 into x0
   RET
-
-  .global writeEOIR1N
-  .type writeEOIR1N, "function"
-writeEOIR1N:
+//---------------------------------------------
+// sets the interrupt id in the end of interrupt reg - group1
+//---------------------------------------------
+  .type setIntidEndReg1N, "function"
+setIntidEndReg1N:
   // signal end of interrupt for Group 1
   // EL3 can access EL1 registers, but EL1 can not access EL3 registers
   // this is group 0 register Interrupt Controller End Of Interrupt Register

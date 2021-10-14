@@ -23,10 +23,10 @@
 #include "exceptionHandlerFuncsEL1N.h" //include the global flagEL1N flag
 
 //timer functions
-extern void disableTimerN(void);
+extern void stopTimerN(void);
 //group 1 interrupt functions
-extern uint32_t readIAR1N(void);
-extern void writeEOIR1N(uint32_t);
+extern uint32_t getIntidAckReg1N(void);
+extern void setIntidEndReg1N(uint32_t);
 
 // get global flag
 extern volatile uint32_t flagEL1N;
@@ -42,8 +42,8 @@ extern volatile uint32_t flagEL1N;
 void HANDLER_FUNC irqHandlerEL1N(void)
 {
 uint32_t intid;
-//read group 1 interrupt acknowledge register
-intid = readIAR1N();
+//get group 1 interrupt id from acknowledge register
+intid = getIntidAckReg1N();
 //local string - don't forget the \n else will get overwritten by next message
 char uartstr[8] = {'I', 'R', 'Q', ' ', 'N', '\n', '\0'};
 char uartstr1[7] = {'I', 'D', '3', '0', '\n', '\0'};
@@ -55,12 +55,14 @@ if (intid == 30)
 {
 	uartNTransmitString(uartstr1); //ID must be 30
 	flagEL1N = 1;
-	//disable the non secure physical timer
-	disableTimerN();
-} else {
-	//Should never get here
+	//stop the non secure physical timer
+	stopTimerN();
 }
-//write end of interrupt for ID 30 - group 1 register
-writeEOIR1N(intid);
+else
+{
+	//error
+}
+//set end of interrupt for ID 30 - group 1 register
+setIntidEndReg1N(intid);
 return;
 }

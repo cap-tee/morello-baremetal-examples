@@ -27,7 +27,7 @@
 #include "uartS.h"
 extern void el1smmu(void);
 extern void setTimerTicksS(uint32_t);
-extern void enableTimerS(void);
+extern void startTimerS(void);
 
 //DEFINE GLOBAL FLAG
 //define global flag for timer interrupt, this is used by el1smain() and fiqHandlerEL1S()
@@ -53,7 +53,7 @@ int el1smain(void)
 	uartSTransmitString("set timer interrupt flag at EL1S\n");
 	setTimerTicksS(0x0010);  // Generate an interrupt in ticks
 	uartSTransmitString("set timer period at EL1S\n");
-	enableTimerS();
+	startTimerS();
 	uartSTransmitString("enabled the timer at EL1S\n");
 	// Wait for the interrupt to arrive
 	while(flagEL1S==0){}

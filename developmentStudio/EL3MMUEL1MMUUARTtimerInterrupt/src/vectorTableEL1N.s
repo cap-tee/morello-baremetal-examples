@@ -19,19 +19,34 @@
                defined in exceptionHandlerFuncsEL1N
  ============================================================================
  */
- /*This section needs to go into non secure memory region */
+
+ //****************************************************************************
+ // SECTION AND DEFINES
+ //****************************************************************************
+ //This section needs to go into non secure memory region
   .section  .NONSECUREvectortableel1N_ass,"ax"
   .align 12
- 
-  .global vectorsEL1N
-  .type vectorsEL1N, "function"
-vectorsEL1N:
 
-// exception handler function, which is defined in the exceptionHandlerFuncsEL1N.c
+  // Vector Table function for EL1N - used outside this file
+  .global vectorsEL1N
+  // exception handler function, which is defined in the exceptionHandlerFuncsEL1N.c
   .global irqHandlerEL1N
 
+ //****************************************************************************
+ // FUNCTIONS
+ //****************************************************************************
+
+ // ------------------------------------------------------------
+ // vectorsEL1N
+ // Description: Vector table entries
+ // ------------------------------------------------------------
+
+  .type vectorsEL1N, "function"
+vectorsEL1N:
 // ------------------------------------------------------------
-// Current EL with SP0 - program state 0  - 0X04 EL1
+// Current EL with SP0
+// This block of four entries are associated with exceptions
+// that have been triggered from EL3 whilst in program state 0 - 0X04 EL1
 // ------------------------------------------------------------
 
   .balign 128
@@ -51,7 +66,9 @@ sp0_currentEL_SError:
   B        .                    //        SError
 
 // ------------------------------------------------------------
-// Current EL with SPx - program state 1  - 0x05 EL1
+// Current EL with SPx
+// This block of four entries are associated with exceptions
+// that have been triggered from EL3 whilst in program state 1  - 0x05 EL1
 // ------------------------------------------------------------
 
   .balign 128
@@ -60,7 +77,7 @@ spx_currentEL_SYNC:
 
   .balign 128
 spx_currentEL_IRQ:
-  B        irqFirstLevelHandler //        IRQ handler for timer
+  B        IRQVectorHandler 	//        IRQ handler for timer
 
   .balign 128
 spx_currentEL_FIQ:
@@ -72,6 +89,9 @@ spx_currentEL_SError:
 
 // ------------------------------------------------------------
 // Lower EL using AArch64
+// This block of four entries are associated with exceptions
+// that have been triggered from a lower EL, which would be EL1N
+// or EL1S using AArch64. This is where SMC exception goes
 // ------------------------------------------------------------
 
   .balign 128
@@ -90,8 +110,12 @@ aarch64_lowerEL_FIQ:
 aarch64_lowerEL_SError:
   B        .                    //        SError
 
+
 // ------------------------------------------------------------
 // Lower EL using AArch32
+// This block of four entries are associated with exceptions
+// that have been triggered from a lower EL, which would be EL1N
+// or EL1S using AArch32.
 // ------------------------------------------------------------
 
   .balign 128
@@ -112,7 +136,7 @@ aarch32_lowerEL_SError:
 
 
 // ------------------------------------------------------------
-irqFirstLevelHandler:
+IRQVectorHandler:
   //save the stack
   STP      x29, x30, [sp, #-16]!
   STP      x18, x19, [sp, #-16]!

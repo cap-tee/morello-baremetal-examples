@@ -24,11 +24,11 @@ extern void ERETtoEL1S(void);
 extern void ERETtoEL1N(void);
 extern void el3mmu(void);
 
-extern void gicInitS(void); // for secure timer interrupt
-extern void gicInitN(void); //for non secure timer set up but goes in EL3 so secure mem
+extern void setupGIC600S(void); // for secure timer interrupt
+extern void setupGIC600N(void); //for non secure timer set up but goes in EL3 so secure mem
 extern void setRegInstallVectors(void);
 extern void setTimerTicksS(uint32_t);
-extern void enableTimerS(void);
+extern void startTimerS(void);
 
 //define global flag, this is used by the
 //fiqHandlerEL3 function as well to set the flag
@@ -46,12 +46,12 @@ int main(void)
 	puts("Installed vector table");
 
 	// Initialize memory mapped GIC registers, and enable timer interrupt
-	gicInitS();
+	setupGIC600S();
 	puts("Initialised GIC");
 	//set up the timer interrupt
 	flagEL3 = 0;
 	setTimerTicksS(0x0010);  // Generate an interrupt in 1000 ticks
-	enableTimerS();
+	startTimerS();
 	// Wait for the interrupt to arrive
 	while(flagEL3==0){}
 	puts("got interrupt AT EL3");
@@ -63,11 +63,11 @@ int main(void)
 
 	// Perform an ERET to EL1 secure
 	//don't need to set up gicInitS again as using secure group 0
-	ERETtoEL1S();
+	//ERETtoEL1S();
 
 	// Perform an ERET to EL1 normal
-	//gicInitN(); //need to set registers differently for non secure group 1
-	//ERETtoEL1N();
+	setupGIC600N(); //need to set registers differently for non secure group 1
+	ERETtoEL1N();
 	// Never get here
 	return EXIT_SUCCESS;
 }

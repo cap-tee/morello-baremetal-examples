@@ -42,7 +42,7 @@
 #include "uartN.h"
 extern void el1nmmu(void);
 extern void setTimerTicksN(uint32_t);
-extern void enableTimerN(void);
+extern void startTimerN(void);
 
 
 //define global flag for timer interrupt, this is used by el1nmain() and irqHandlerEL1N()
@@ -89,7 +89,7 @@ int LOCATE_FUNC el1nmain(void)
 	flagEL1N = 0;
 	uartNTransmitString(uartstr1);
 	setTimerTicksN(0x0010);  // Generate an interrupt in ticks
-	enableTimerN();
+	startTimerN();
 	// Wait for the interrupt to arrive
 	while(flagEL1N==0){}
 	//send message to uart
