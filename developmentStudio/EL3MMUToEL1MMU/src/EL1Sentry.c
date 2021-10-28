@@ -5,6 +5,7 @@
  Version     :
  Copyright   : CAP-TEE 2021
  Description : EL1 secure code
+ Limitations : A heap has not yet been setup
  ============================================================================
  */
 //Known issues:
@@ -22,7 +23,7 @@ int el1smain(void) {
 
 	puts("now in EL1 secure");
 	//el1smmu set up translation tables to use DRAM0, uart, and interrupt controller
-	el1smmu();
+	//el1smmu(); //now called from EL1S boot code before DDC is nulled in purecap mode
 	puts("mmu setup in EL1S");
 
 

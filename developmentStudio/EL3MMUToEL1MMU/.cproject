@@ -41,7 +41,9 @@
                                 								
                                 <option defaultValue="com.arm.llvm.tool.c.compiler.base.options.debug.level.std" id="com.arm.llvm.tool.c.compiler.base.options.debug.level.2102420133" name="Debug Level" superClass="com.arm.llvm.tool.c.compiler.base.options.debug.level" useByScannerDiscovery="true" valueType="enumerated"/>
                                 								
-                                <option id="com.arm.llvm.tool.c.compiler.base.option.arch.1606433108" name="Architecture (-march)" superClass="com.arm.llvm.tool.c.compiler.base.option.arch" useByScannerDiscovery="true" value="morello" valueType="string"/>
+                                <option id="com.arm.llvm.tool.c.compiler.base.option.arch.1606433108" name="Architecture (-march)" superClass="com.arm.llvm.tool.c.compiler.base.option.arch" useByScannerDiscovery="true" value="morello+c64" valueType="string"/>
+                                								
+                                <option id="com.arm.llvm.tool.c.compiler.base.option.abi.2086497709" name="ABI (-mabi)" superClass="com.arm.llvm.tool.c.compiler.base.option.abi" useByScannerDiscovery="true" value="purecap" valueType="string"/>
                                 								
                                 <inputType id="com.arm.llvm.tool.c.compiler.base.input.58423443" superClass="com.arm.llvm.tool.c.compiler.base.input"/>
                                 							
@@ -57,19 +59,25 @@
                             							
                             <tool id="com.arm.llvm.tool.assembler.base.var.llvm-11.0.0.1379986190" name="LLVM Assembler 11.0.0" superClass="com.arm.llvm.tool.assembler.base.var.llvm-11.0.0">
                                 								
+                                <option id="com.arm.llvm.tool.assembler.base.option.arch.80470644" name="Architecture (-march)" superClass="com.arm.llvm.tool.assembler.base.option.arch" useByScannerDiscovery="true" value="morello+c64" valueType="string"/>
+                                								
+                                <option id="com.arm.llvm.tool.assembler.base.option.abi.436327553" name="ABI (-mabi)" superClass="com.arm.llvm.tool.assembler.base.option.abi" useByScannerDiscovery="true" value="purecap" valueType="string"/>
+                                								
                                 <inputType id="com.arm.llvm.tool.assembler.base.input.1017902307" superClass="com.arm.llvm.tool.assembler.base.input"/>
                                 							
                             </tool>
                             							
                             <tool id="com.arm.llvm.tool.c.linker.base.var.llvm-11.0.0.731441347" name="LLVM C Linker 11.0.0" superClass="com.arm.llvm.tool.c.linker.base.var.llvm-11.0.0">
                                 								
-                                <option id="com.arm.llvm.tool.c.linker.base.option.arch.1945514930" name="Architecture (-march)" superClass="com.arm.llvm.tool.c.linker.base.option.arch" useByScannerDiscovery="true" value="morello" valueType="string"/>
+                                <option id="com.arm.llvm.tool.c.linker.base.option.arch.1945514930" name="Architecture (-march)" superClass="com.arm.llvm.tool.c.linker.base.option.arch" useByScannerDiscovery="true" value="morello+c64" valueType="string"/>
                                 								
                                 <option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.arm.llvm.tool.c.linker.base.option.extras.201760529" name="Other options (-Xlinker [option])" superClass="com.arm.llvm.tool.c.linker.base.option.extras" useByScannerDiscovery="false" valueType="stringList">
                                     									
                                     <listOptionValue builtIn="false" value="-T/home/osboxes/projects/morello-baremetal-examples/developmentStudio/EL3MMUToEL1MMU/src/linker-script.ld -v"/>
                                     								
                                 </option>
+                                								
+                                <option id="com.arm.llvm.tool.c.linker.base.option.abi.142739490" name="ABI (-mabi)" superClass="com.arm.llvm.tool.c.linker.base.option.abi" useByScannerDiscovery="true" value="purecap" valueType="string"/>
                                 								
                                 <inputType id="com.arm.llvm.tool.c.linker.base.input.512334824" superClass="com.arm.llvm.tool.c.linker.base.input">
                                     									

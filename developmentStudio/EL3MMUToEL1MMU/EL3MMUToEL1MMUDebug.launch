@@ -1,40 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="com.arm.debugger.launcher2">
     <mapAttribute key="AverageDurationTracker">
-        <mapEntry key="*Fetching Data Model" value="775458"/>
-        <mapEntry key="*list global low level symbols" value="1494894"/>
+        <mapEntry key="*Fetching Data Model" value="3977999"/>
+        <mapEntry key="*list global low level symbols" value="14781392"/>
         <mapEntry key="*loading values from target" value="1290445"/>
-        <mapEntry key="*updating registers" value="58424688"/>
-        <mapEntry key="AddEventObserver" value="1233691"/>
-        <mapEntry key="Evaluate" value="2101647"/>
-        <mapEntry key="ListRegimeWarningsCommand" value="336594"/>
+        <mapEntry key="*updating registers" value="72365297"/>
+        <mapEntry key="AddEventObserver" value="2751238"/>
+        <mapEntry key="Evaluate" value="1691102"/>
+        <mapEntry key="ListRegimeWarningsCommand" value="377722"/>
         <mapEntry key="ResumeToHere" value="27188772"/>
-        <mapEntry key="compute execution mode" value="1168612"/>
-        <mapEntry key="continue" value="16383365"/>
+        <mapEntry key="areCachesAvailable" value="990423"/>
+        <mapEntry key="compute execution mode" value="1325776"/>
+        <mapEntry key="continue" value="23078827"/>
         <mapEntry key="disassemble" value="59274269"/>
-        <mapEntry key="get capabilities" value="511415"/>
-        <mapEntry key="get cwd" value="221660"/>
-        <mapEntry key="get execution addresss" value="455338"/>
-        <mapEntry key="get source lines" value="347178"/>
-        <mapEntry key="initialize command help" value="72555695"/>
-        <mapEntry key="interrupt" value="8156295"/>
-        <mapEntry key="list breakpoint options" value="175245"/>
-        <mapEntry key="list breakpoints" value="251626"/>
-        <mapEntry key="list instruction sets" value="330384"/>
-        <mapEntry key="list signals" value="4579315"/>
-        <mapEntry key="list translations" value="662274"/>
-        <mapEntry key="list watchpoint options" value="333334"/>
-        <mapEntry key="list watchpoints" value="395512"/>
-        <mapEntry key="loadfile" value="39499973"/>
+        <mapEntry key="get capabilities" value="457883"/>
+        <mapEntry key="get cwd" value="233832"/>
+        <mapEntry key="get execution addresss" value="432537"/>
+        <mapEntry key="get source lines" value="414780"/>
+        <mapEntry key="getValidEncodings" value="957787"/>
+        <mapEntry key="initialize command help" value="120948492"/>
+        <mapEntry key="interrupt" value="19553043"/>
+        <mapEntry key="list breakpoint options" value="1328513"/>
+        <mapEntry key="list breakpoints" value="1169485"/>
+        <mapEntry key="list instruction sets" value="2602875"/>
+        <mapEntry key="list signals" value="11166343"/>
+        <mapEntry key="list translations" value="1386964"/>
+        <mapEntry key="list watchpoint options" value="3450857"/>
+        <mapEntry key="list watchpoints" value="1348733"/>
+        <mapEntry key="loadfile" value="125842729"/>
         <mapEntry key="nexti" value="17130565"/>
-        <mapEntry key="read memory map" value="5131454"/>
-        <mapEntry key="set CWD" value="2898666"/>
-        <mapEntry key="set debug-from" value="1176487"/>
-        <mapEntry key="start" value="16906816"/>
+        <mapEntry key="read memory map" value="60960181"/>
+        <mapEntry key="set CWD" value="4418423"/>
+        <mapEntry key="set debug-from" value="2017632"/>
+        <mapEntry key="start" value="118619516"/>
         <mapEntry key="step" value="29257481"/>
         <mapEntry key="stepi" value="19836006"/>
-        <mapEntry key="updating MMU tables" value="1025325"/>
-        <mapEntry key="waitForTargetToStop" value="7787093"/>
+        <mapEntry key="updating MMU tables" value="2179884"/>
+        <mapEntry key="waitForTargetToStop" value="24379732"/>
         <mapEntry key="write expression" value="13063764"/>
     </mapAttribute>
     <intAttribute key="DEBUG_TAB..RESOURCES.COUNT" value="0"/>
@@ -45,9 +47,9 @@
     <stringAttribute key="FILES.DEBUG_RESIDENT_ANDROID.RESOURCES.0.VALUE" value=""/>
     <intAttribute key="FILES.DEBUG_RESIDENT_ANDROID.RESOURCES.COUNT" value="1"/>
     <listAttribute key="FILES.DEBUG_RESIDENT_APP"/>
-    <stringAttribute key="FILES.DEBUG_RESIDENT_APP.RESOURCES.0.TYPE" value="TARGET_WORKING_DIR"/>
+    <stringAttribute key="FILES.DEBUG_RESIDENT_APP.RESOURCES.0.TYPE" value="APPLICATION_ON_TARGET"/>
     <stringAttribute key="FILES.DEBUG_RESIDENT_APP.RESOURCES.0.VALUE" value=""/>
-    <stringAttribute key="FILES.DEBUG_RESIDENT_APP.RESOURCES.1.TYPE" value="APPLICATION_ON_TARGET"/>
+    <stringAttribute key="FILES.DEBUG_RESIDENT_APP.RESOURCES.1.TYPE" value="TARGET_WORKING_DIR"/>
     <stringAttribute key="FILES.DEBUG_RESIDENT_APP.RESOURCES.1.VALUE" value=""/>
     <intAttribute key="FILES.DEBUG_RESIDENT_APP.RESOURCES.COUNT" value="2"/>
     <listAttribute key="FILES.DOWNLOAD_AND_DEBUG">
@@ -128,16 +130,10 @@
     <stringAttribute key="breakpoints" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#10;&lt;breakpoints order=&quot;ALPHA&quot;&gt;&#10;&lt;/breakpoints&gt;&#10;"/>
     <listAttribute key="com.arm.debug.views.common.AddressTracker.debugger.view.DisassemblyView.addresses">
         <listEntry value="&lt;Next Instruction&gt;"/>
-        <listEntry value="0xc0000000"/>
-        <listEntry value="0x80009000"/>
-        <listEntry value=""/>
-        <listEntry value="0x8028"/>
+        <listEntry value="0x80018000"/>
     </listAttribute>
     <listAttribute key="com.arm.debug.views.common.AddressTracker.debugger.view.DisassemblyView.ranges">
         <listEntry value="100"/>
-        <listEntry value="100"/>
-        <listEntry value="100"/>
-        <listEntry value=""/>
         <listEntry value="100"/>
     </listAttribute>
     <listAttribute key="com.arm.debug.views.common.AddressTracker.debugger.view.MemoryView.addresses">
@@ -159,16 +155,18 @@
         <listEntry value="&lt;Next Instruction&gt;"/>
         <listEntry value="100"/>
     </listAttribute>
-    <stringAttribute key="debugger.view.MMUView:DebugOutlineColumnState" value="OutlineConfig1&#9;5&#9;0&#9;true&#9;false&#9;16&#9;-1&#9;true&#9;3&#9;true&#9;false&#9;560&#9;-1&#9;true&#9;5&#9;true&#9;true&#9;123&#9;-1&#9;true&#9;4&#9;true&#9;true&#9;48&#9;-1&#9;true&#9;6&#9;true&#9;true&#9;86&#9;-1&#9;true"/>
+    <stringAttribute key="debugger.view.MMUView:DebugOutlineColumnState" value="OutlineConfig1&#9;5&#9;0&#9;true&#9;false&#9;16&#9;-1&#9;true&#9;3&#9;true&#9;true&#9;236&#9;-1&#9;true&#9;5&#9;true&#9;true&#9;123&#9;-1&#9;true&#9;4&#9;true&#9;true&#9;48&#9;-1&#9;true&#9;6&#9;true&#9;true&#9;86&#9;-1&#9;true"/>
     <stringAttribute key="debugger.view.MemoryView" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#10;&lt;page&gt;&#10;&#9;&lt;memoryView/&gt;&#10;&lt;/page&gt;&#10;"/>
     <listAttribute key="debugger.view.MemoryView:current">
         <listEntry value=""/>
         <listEntry value=""/>
     </listAttribute>
-    <stringAttribute key="debugger.view.NewRegisterView:DebugOutlineColumnState" value="OutlineConfig1&#9;8&#9;0&#9;true&#9;true&#9;56&#9;-1&#9;true&#9;1&#9;false&#9;true&#9;108&#9;-1&#9;true&#9;2&#9;true&#9;false&#9;642&#9;-1&#9;true&#9;3&#9;false&#9;true&#9;48&#9;-1&#9;true&#9;4&#9;false&#9;true&#9;56&#9;-1&#9;true&#9;5&#9;true&#9;true&#9;43&#9;-1&#9;true&#9;6&#9;false&#9;true&#9;75&#9;-1&#9;true&#9;7&#9;true&#9;true&#9;62&#9;-1&#9;true"/>
+    <stringAttribute key="debugger.view.NewRegisterView:DebugOutlineColumnState" value="OutlineConfig1&#9;8&#9;0&#9;true&#9;true&#9;117&#9;-1&#9;true&#9;1&#9;false&#9;true&#9;108&#9;-1&#9;true&#9;2&#9;true&#9;false&#9;642&#9;-1&#9;true&#9;3&#9;false&#9;true&#9;48&#9;-1&#9;true&#9;4&#9;false&#9;true&#9;56&#9;-1&#9;true&#9;5&#9;true&#9;true&#9;43&#9;-1&#9;true&#9;6&#9;false&#9;true&#9;75&#9;-1&#9;true&#9;7&#9;true&#9;true&#9;62&#9;-1&#9;true"/>
     <stringAttribute key="debugger.view.NewRegisterView:_selectedRegisterSet" value="All registers"/>
     <mapAttribute key="debugger.view.NewRegisterView_registerSets"/>
+    <stringAttribute key="debugger.view.VariableTreeView:DebugOutlineColumnState" value="OutlineConfig1&#9;8&#9;0&#9;true&#9;true&#9;182&#9;-1&#9;true&#9;1&#9;false&#9;true&#9;108&#9;-1&#9;true&#9;2&#9;true&#9;true&#9;117&#9;-1&#9;true&#9;3&#9;true&#9;true&#9;48&#9;-1&#9;true&#9;4&#9;true&#9;true&#9;56&#9;-1&#9;true&#9;5&#9;true&#9;true&#9;43&#9;-1&#9;true&#9;6&#9;true&#9;true&#9;75&#9;-1&#9;true&#9;7&#9;true&#9;true&#9;62&#9;-1&#9;true"/>
     <booleanAttribute key="debugger.view.register.DrawAsHex" value="false"/>
+    <booleanAttribute key="debugger.view.variable.DrawAsHex" value="false"/>
     <stringAttribute key="dtsl_config" value="DtslScript"/>
     <stringAttribute key="dtsl_config_script" value="CDB://dtsl_config_script.py"/>
     <stringAttribute key="dtsl_options_file" value="default"/>

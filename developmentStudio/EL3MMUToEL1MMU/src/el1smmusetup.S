@@ -6,6 +6,7 @@
  Copyright   : CAP-TEE 2021
  Description : Basic translation table for EL1S to include memory and peripheral access
                uses lower part of DRAM0 for secure memory region
+               File extension needs to be uppercase S for preprocessing #ifdef __CHERI_PURE_CAPABILITY__
 Limitations  : When running on real hardware need to change this code to prefill
  			   table with faults
  ============================================================================
@@ -21,6 +22,12 @@ Limitations  : When running on real hardware need to change this code to prefill
 //*****************************************
 // DEFINES
 //*****************************************
+
+//purecap defined by compiler, so no need to define here:
+//morello:     	__CHERI__
+//+c64:			__ARM_FEATURE_C64
+//purecap:	 	__CHERI_PURE_CAPABILITY__
+
 // There are three types of table entry: (1) fault, (2) block, (3) next table
 // Define lower and upper table entry attributes to use
 // Assuming MAIR register entries are:
@@ -36,6 +43,8 @@ Limitations  : When running on real hardware need to change this code to prefill
 .equ UPPBLK_HW60,			(1 << 60)	//Hardware Implementation defined bit 60
 .equ UPPBLK_HW61,			(1 << 61)   //Hardware Implementation defined bit 61
 
+.equ MMU_TABLE_SIZE, 4096 //4096 bytes - 4k table
+
 // function to set up mmu for EL1S
 .global el1smmu
 
@@ -49,6 +58,19 @@ Limitations  : When running on real hardware need to change this code to prefill
   .type el1smmu, "function"
 el1smmu:
 
+//this function needs to be called from the EL1S boot code
+//before DDC_EL1 is nulled.
+
+  //don't do this as DDC_EL1 still at maximum bounds
+  // DDC_EL1 is separate from DDC_EL3
+  // set up the default data capability register for purecap
+  // #ifdef must be lowercase
+  //#ifdef __CHERI_PURE_CAPABILITY__
+    // set default data capability permissions from c15
+    // set to maximum bounds
+  //	MSR       DDC, c15
+ // #endif
+
   // Set up the MAIR memory attributes for the block entries
   // Attr0 = 1110 1110 = 0xEE = Normal, Inner/Outer write back non transient as per Morello Default DRAM0
   // Attr1 = 0000 0000 = 0x00 = Device-nGnRnE
@@ -58,27 +80,66 @@ el1smmu:
   // EL1S translation table for Morello
   // Get address of level 1 table for TTBR0_EL1
   LDR      x1, =TABLE_ADDR_EL1S
+
+  #ifdef __CHERI_PURE_CAPABILITY__
+    //get default data capability permissions
+  	MRS       c15, DDC
+    //put x1 value into c1 with default permissions
+  	SCVALUE   c1, c15, x1
+
+ 	//change bounds
+ 	// set length of bounds from the base address(address of table) in value
+ 	// make sure the length is enough to write all the table values
+ 	// otherwise a capability exception will occur
+ 	// set length, 4 bytes per mem location, but writes in two blocks,
+ 	// so 8 bytes, (4 entries x 8 =32 min)
+ 	// size of table allocated in memory is 4096 bytes
+ 	MOV x3, #MMU_TABLE_SIZE //set length
+ 	SCBNDSE c1,c1,x3 //set capability bounds
+ 	//-----check bounds by looking at x2 register
+ 	//get base of capability and put into x2 - this is the table addr
+  	GCBASE x2, c1
+  	//get limit of capability and put into x2 - this is table addr + length
+  	GCLIM x2, c1
+  	//get length of capability and put into x2 - this is length only
+  	GCLEN x2, c1
+  	//get permissions of capability and put into x2
+  	GCPERM x2, c1
+    //-----
+  #endif
+
   // CAP-TEE Morello - peripheral and expansion regions - device memory
   // (0) 0x0000,0000 - 0x3FFF,FFFF
   // Lower Block
-  LDR      x0, =LOWBLK_DEVICE_nGnRnE
+  //LDR      x0, =LOWBLK_DEVICE_nGnRnE
+  MOV     x0, #LOWBLK_DEVICE_nGnRnE
   // address is 0 - 0x0
-  STR      x0, [x1]
+  #ifdef __CHERI_PURE_CAPABILITY__
+    STR      x0, [c1]
+  #else
+    STR      x0, [x1]
+  #endif
   // Upper Block is 0 - 0x0
 
   // CAP-TEE Morello - peripheral and expansion regions - device memory
   // (1) 0x4000,0000 - 0x7FFF,FFFF
   // Lower Block
-  LDR      x0, =LOWBLK_DEVICE_nGnRnE
+  //LDR      x0, =LOWBLK_DEVICE_nGnRnE
+  MOV      x0, #LOWBLK_DEVICE_nGnRnE
   // OR with start address of region
   ORR      x0, x0, #0x40000000
-  STR      x0, [x1, #8]
-  // Upper Block - 0x0
+  #ifdef __CHERI_PURE_CAPABILITY__
+  	STR      x0, [c1, #8]
+  #else
+    STR      x0, [x1, #8]
+  #endif
+  // Upper Block is 0 0x0
 
   // CAP-TEE Morello - lower DRAM0 region - normal memory
   // (2) 0x8000 0000 - 0xBFFF FFFF
   // Lower Block
-  LDR      x0, =LOWBLK_NORMAL_NON_TRANS
+  //LDR      x0, =LOWBLK_NORMAL_NON_TRANS
+  MOV      x0, #LOWBLK_NORMAL_NON_TRANS
   // OR with start address of region
   ORR      x0, x0, #0x80000000
   // Upper block
@@ -86,14 +147,19 @@ el1smmu:
   ORR      x0, x0, #UPPBLK_HW60
   // OR Hardware Implementation defined bit 61
   ORR      x0, x0, #UPPBLK_HW61
-  STR      x0, [x1, #16]
+  #ifdef __CHERI_PURE_CAPABILITY__
+  	STR      x0, [c1, #16]
+  #else
+    STR      x0, [x1, #16]
+  #endif
 
   // turn off this region as it is non-secure
   // CAP-TEE Morello - upper DRAM0 region - ignore memory
   // (3) 0xC000 0000 - 0xFFFF FFFF
   // Lower Block
   // fault means ignore
-  LDR      x0, =LOWBLK_FAULT
+  //LDR      x0, =LOWBLK_FAULT
+  MOV 	   x0, #LOWBLK_FAULT
   // OR with start address of region
   ORR      x0, x0, #0xC0000000
   // Upper block
@@ -101,8 +167,12 @@ el1smmu:
   ORR      x0, x0, #UPPBLK_HW60
   // OR Hardware Implementation defined bit 61
   ORR      x0, x0, #UPPBLK_HW61
-  STR      x0, [x1, #24]
-
+  #ifdef __CHERI_PURE_CAPABILITY__
+  	STR      x0, [c1, #24]
+  #else
+  	STR      x0, [x1, #24]
+  #endif
+  // data synchronisation - make sure all data written
   DSB      SY
 
   // Set up TCR_EL1
@@ -209,5 +279,6 @@ el1smmu:
 
   .global =TABLE_ADDR_EL1S
 TABLE_ADDR_EL1S:
-  .fill 4096 , 1 , 0
+  //4096 bytes
+  .fill MMU_TABLE_SIZE , 1 , 0
 

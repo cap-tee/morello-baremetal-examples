@@ -10,6 +10,7 @@
  	 	 	   up as the secure memory location for EL3 in this setup. This
  	 	 	   means that any c function call from the normal world such as
  	 	 	   puts tries to jump to secure memory to run.
+   	   	   	   A heap has not yet been setup
  ============================================================================
  */
 
@@ -25,7 +26,7 @@ int LOCATE_FUNC el1nmain(void) {
 	//The puts c function is stored in secure memory so can't use it!
 	//puts("now in EL1 normal");
 	//el1nmmu set up translation tables to use DRAM0, uart, and interrupt controller
-	el1nmmu();
+	//el1nmmu(); //now called from EL1N boot code before DDC is nulled in purecap mode
 	//loop here
 	while(flag==1){}
 

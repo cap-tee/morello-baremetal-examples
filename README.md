@@ -34,7 +34,7 @@ This directory contains a set of projects that can be loaded into the developmen
 3. ChericExample - Exploring the cheri.h API functions and the cheriintrin.h built-in functions. Setting up capability pointers, and retreiving and printing their properties. `purecap`
 4. MMUEL3 - Changes the MMU set up at EL3 for Morello. `purecap`
 5. EL3ToEL1 - Changes Exception level to either EL1S or EL1N. `purecap`
-6. EL3MMUToEL1MMU - Changes Exception level to either EL1S or EL1N and sets up the MMUs, and secure & non-secure memory regions.
+6. EL3MMUToEL1MMU - Changes Exception level to either EL1S or EL1N and sets up the MMUs, and secure & non-secure memory regions. `purecap`
 7. EL3MMUUART - Changes the MMU set up at EL3 for Morello, sets up the UART and writes a message.
 8. EL3MMUToEL1MMUUART - Changes Exception level to either EL1S or EL1N and sets up the MMUs and uart, and writes a message. It also sets up secure & non-secure memory regions.
 9. EL3MMUTimerInterrupt - sets up the mmu at EL3, installs the vector tables for exception handling, sets up the interrupt controller, and performs a timer interrupt.
