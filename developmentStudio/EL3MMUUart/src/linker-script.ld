@@ -70,6 +70,7 @@ SECTIONS
     
     
     end = .;
+     __end__ = .; /* added for Morello-purecap -doesn't compile without this*/
 }
 
 

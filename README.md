@@ -35,7 +35,7 @@ This directory contains a set of projects that can be loaded into the developmen
 4. MMUEL3 - Changes the MMU set up at EL3 for Morello. `purecap`
 5. EL3ToEL1 - Changes Exception level to either EL1S or EL1N. `purecap`
 6. EL3MMUToEL1MMU - Changes Exception level to either EL1S or EL1N and sets up the MMUs, and secure & non-secure memory regions. `purecap`
-7. EL3MMUUART - Changes the MMU set up at EL3 for Morello, sets up the UART and writes a message.
+7. EL3MMUUART - Changes the MMU set up at EL3 for Morello, sets up the UART and writes a message. `purecap`
 8. EL3MMUToEL1MMUUART - Changes Exception level to either EL1S or EL1N and sets up the MMUs and uart, and writes a message. It also sets up secure & non-secure memory regions.
 9. EL3MMUTimerInterrupt - sets up the mmu at EL3, installs the vector tables for exception handling, sets up the interrupt controller, and performs a timer interrupt.
 10. EL3MMUEL1MMUUARTtimerInterrupt - sets up the mmu at EL3, installs the vector tables for exception handling, sets up the interrupt controller, and performs a secure timer interrupt. Changes Exception level to either EL1S or EL1N and sets up the MMUs and uart, and performs another timer interrupt (secure timer in EL1S and non secure timer in EL1N). It also sets up secure & non-secure memory regions.
