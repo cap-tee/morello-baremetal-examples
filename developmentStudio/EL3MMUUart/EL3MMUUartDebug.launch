@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="com.arm.debugger.launcher2">
     <mapAttribute key="AverageDurationTracker">
-        <mapEntry key="*Fetching Data Model" value="1851204"/>
-        <mapEntry key="*list global low level symbols" value="4149763"/>
-        <mapEntry key="*updating registers" value="192703622"/>
-        <mapEntry key="AddEventObserver" value="1912394"/>
+        <mapEntry key="*Fetching Data Model" value="2616360"/>
+        <mapEntry key="*list global low level symbols" value="2855627"/>
+        <mapEntry key="*updating registers" value="208017894"/>
+        <mapEntry key="AddEventObserver" value="2259772"/>
         <mapEntry key="Evaluate" value="3696767"/>
-        <mapEntry key="ListRegimeWarningsCommand" value="302612"/>
+        <mapEntry key="ListRegimeWarningsCommand" value="759852"/>
         <mapEntry key="areCachesAvailable" value="497865"/>
-        <mapEntry key="compute execution mode" value="875561"/>
-        <mapEntry key="continue" value="30848404"/>
-        <mapEntry key="get capabilities" value="8381580"/>
-        <mapEntry key="get execution addresss" value="939450"/>
-        <mapEntry key="get source lines" value="1674692"/>
+        <mapEntry key="compute execution mode" value="2642372"/>
+        <mapEntry key="continue" value="35787485"/>
+        <mapEntry key="get capabilities" value="4461319"/>
+        <mapEntry key="get execution addresss" value="837499"/>
+        <mapEntry key="get source lines" value="1264414"/>
         <mapEntry key="getValidEncodings" value="340151"/>
-        <mapEntry key="initialize command help" value="92250575"/>
+        <mapEntry key="initialize command help" value="137016889"/>
         <mapEntry key="interrupt" value="17685717"/>
-        <mapEntry key="list breakpoint options" value="719772"/>
-        <mapEntry key="list breakpoints" value="1850991"/>
-        <mapEntry key="list instruction sets" value="4585043"/>
-        <mapEntry key="list signals" value="28441550"/>
-        <mapEntry key="list translations" value="976106"/>
-        <mapEntry key="list watchpoint options" value="2852012"/>
-        <mapEntry key="list watchpoints" value="592534"/>
-        <mapEntry key="loadfile" value="143759922"/>
-        <mapEntry key="set CWD" value="5219070"/>
-        <mapEntry key="set debug-from" value="1455790"/>
-        <mapEntry key="start" value="100998764"/>
-        <mapEntry key="updating MMU tables" value="579224"/>
-        <mapEntry key="waitForTargetToStop" value="33328865"/>
+        <mapEntry key="list breakpoint options" value="2599288"/>
+        <mapEntry key="list breakpoints" value="2023063"/>
+        <mapEntry key="list instruction sets" value="10094843"/>
+        <mapEntry key="list signals" value="26728270"/>
+        <mapEntry key="list translations" value="3124581"/>
+        <mapEntry key="list watchpoint options" value="4883152"/>
+        <mapEntry key="list watchpoints" value="1424322"/>
+        <mapEntry key="loadfile" value="184790619"/>
+        <mapEntry key="set CWD" value="7005034"/>
+        <mapEntry key="set debug-from" value="2399543"/>
+        <mapEntry key="start" value="186181646"/>
+        <mapEntry key="updating MMU tables" value="62851"/>
+        <mapEntry key="waitForTargetToStop" value="32644494"/>
     </mapAttribute>
     <intAttribute key="DEBUG_TAB..RESOURCES.COUNT" value="0"/>
     <intAttribute key="FILES.CONNECT_TO_GDB_SERVER.RESOURCES.COUNT" value="0"/>
@@ -139,7 +139,7 @@
         <listEntry value="&lt;Next Instruction&gt;"/>
         <listEntry value="100"/>
     </listAttribute>
-    <stringAttribute key="debugger.view.MMUView:DebugOutlineColumnState" value="OutlineConfig1&#9;5&#9;0&#9;true&#9;false&#9;16&#9;-1&#9;true&#9;3&#9;true&#9;true&#9;110&#9;-1&#9;true&#9;5&#9;true&#9;true&#9;123&#9;-1&#9;true&#9;4&#9;true&#9;true&#9;48&#9;-1&#9;true&#9;6&#9;true&#9;true&#9;400&#9;-1&#9;true"/>
+    <stringAttribute key="debugger.view.MMUView:DebugOutlineColumnState" value="OutlineConfig1&#9;5&#9;0&#9;true&#9;false&#9;16&#9;-1&#9;true&#9;3&#9;true&#9;true&#9;110&#9;-1&#9;true&#9;5&#9;true&#9;true&#9;123&#9;-1&#9;true&#9;4&#9;true&#9;true&#9;48&#9;-1&#9;true&#9;6&#9;true&#9;true&#9;86&#9;-1&#9;true"/>
     <stringAttribute key="debugger.view.MemoryView" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#10;&lt;page&gt;&#10;&#9;&lt;memoryView/&gt;&#10;&lt;/page&gt;&#10;"/>
     <listAttribute key="debugger.view.MemoryView:current">
         <listEntry value=""/>

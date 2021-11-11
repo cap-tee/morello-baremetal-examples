@@ -16,7 +16,7 @@
 #include "uartS.h"
 //capability mode includes
 #include "capfuncs.h"
-#include <cheriintrin.h>
+//#include <cheriintrin.h>
 
 //--------------------------------------------------------------------
 // Define UART structure of capabilities
@@ -95,42 +95,50 @@ void uartScapSetup(void* UARTrootCap)
 	printf("UARTDR\n");
 	printcapabilityPar((void*)uartScap.UARTDR);
     // +0x04 - Error clear register
-	uartScap.UARTECR = cheri_offset_set(UARTrootCap, UARTECR_offset);
+	//uartScap.UARTECR = cheri_offset_set(UARTrootCap, UARTECR_offset); //don't need to do this
+	uartScap.UARTECR = UARTrootCap+UARTECR_offset;//just increment in purecap mode
 	printf(".............................................\n");
 	printf("UARTECR\n");
 	printcapabilityPar((void*)uartScap.UARTECR);
     // +0x18 - RO
-	uartScap.UARTFR = cheri_offset_set(UARTrootCap, UARTFR_offset);
+	//uartScap.UARTFR = cheri_offset_set(UARTrootCap, UARTFR_offset);
+	uartScap.UARTFR = UARTrootCap+UARTFR_offset;
 	printf(".............................................\n");
 	printf("UARTFR\n");
 	printcapabilityPar((void*)uartScap.UARTFR);
     // +0x24 - integer baud rate register
-	uartScap.UARTIBRD = cheri_offset_set(UARTrootCap, UARTIBRD_offset);
+	//uartScap.UARTIBRD = cheri_offset_set(UARTrootCap, UARTIBRD_offset);
+	uartScap.UARTIBRD = UARTrootCap+UARTIBRD_offset;
 	printf(".............................................\n");
 	printf("UARTIBRD\n");
 	printcapabilityPar((void*)uartScap.UARTIBRD);
     // +0x28 - fractional baud rate register
-	uartScap.UARTFBRD = cheri_offset_set(UARTrootCap, UARTFBRD_offset);
+	//uartScap.UARTFBRD = cheri_offset_set(UARTrootCap, UARTFBRD_offset);
+	uartScap.UARTFBRD = UARTrootCap+UARTFBRD_offset;
 	printf(".............................................\n");
 	printf("UARTFBRD\n");
 	printcapabilityPar((void*)uartScap.UARTFBRD);
     // +0x2C - line control register
-	uartScap.UARTLCR_H = cheri_offset_set(UARTrootCap, UARTLCR_H_offset);
+	//uartScap.UARTLCR_H = cheri_offset_set(UARTrootCap, UARTLCR_H_offset);
+	uartScap.UARTLCR_H = UARTrootCap+UARTLCR_H_offset;
 	printf(".............................................\n");
 	printf("UARTLCR_H\n");
 	printcapabilityPar((void*)uartScap.UARTLCR_H);
     // +0x30
-	uartScap.UARTCR = cheri_offset_set(UARTrootCap, UARTCR_offset);
+	//uartScap.UARTCR = cheri_offset_set(UARTrootCap, UARTCR_offset);
+	uartScap.UARTCR = UARTrootCap+UARTCR_offset;
 	printf(".............................................\n");
 	printf("UARTCR\n");
 	printcapabilityPar((void*)uartScap.UARTCR);
     // +0x38 - Interrupt mask set/clear register
-	uartScap.UARTIMSC = cheri_offset_set(UARTrootCap, UARTIMSC_offset);
+	//uartScap.UARTIMSC = cheri_offset_set(UARTrootCap, UARTIMSC_offset);
+	uartScap.UARTIMSC = UARTrootCap+UARTIMSC_offset;
 	printf(".............................................\n");
 	printf("UARTIMSC\n");
 	printcapabilityPar((void*)uartScap.UARTIMSC);
     // +0x44 - WO - Interrupt Clear Register
-	uartScap.UARTICR = cheri_offset_set(UARTrootCap, UARTICR_offset);
+	//uartScap.UARTICR = cheri_offset_set(UARTrootCap, UARTICR_offset);
+	uartScap.UARTICR = UARTrootCap+UARTICR_offset;
 	printf(".............................................\n");
 	printf("UARTICR\n");
 	printcapabilityPar((void*)uartScap.UARTICR);
