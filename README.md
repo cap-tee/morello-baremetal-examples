@@ -42,7 +42,7 @@ This directory contains a set of projects that can be loaded into the developmen
 11. EL1ToEL3SMC - example showing how to use the SMC instruction to call into EL3 from either EL1N (normal world) or EL1S (secure world).
 12. EL1NToEL3ToEL1SSMC - example showing how to pass messages between EL1N (normal world) and EL1S (secure world) using SMC.
 13. EL2- example showing how to use the EL2N Hypervisor mode to perform a two stage memory translation for EL1N, and restrict EL1N from reading and writing to the EL1N MMU memory registers. 
-14. EL3UARTredirect - example showing how to redirect an embedded printf function to the uart. 
+14. EL3UARTredirect - example showing how to redirect an embedded printf function to the uart. `purecap`
 
 **Boot Flow Examples - EL2N Trusted Firmware Tests (EL2 stand-alone bare metal program):**
 
